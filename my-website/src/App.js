@@ -1,4 +1,4 @@
-import { Link, Routes, Route } from 'react-router-dom';
+import { NavLink, Routes, Route } from 'react-router-dom';
 import About from './pages/About';
 import Projects from './pages/Projects';
 import Experience from './pages/Experience';
@@ -28,26 +28,47 @@ export default function App() {
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mx-auto border-start border-end border-2 px-0">
-              <li className="nav-item border-end border-2 me-0">
-                <Link className="nav-link fs-4" to="/about">
-                  About
-                </Link>
-              </li>
-              <li className="nav-item border-end border-2 me-0">
-                <Link className="nav-link fs-4" to="/projects">
-                  Projects
-                </Link>
-              </li>
-              <li className="nav-item border-end border-2 me-0">
-                <Link className="nav-link fs-4" to="/experience">
-                  Experience
-                </Link>
-              </li>
-              <li className="nav-item border-end border-2 me-0">
-                <Link className="nav-link fs-4" to="/other">
-                  Other
-                </Link>
-              </li>
+            <li className="nav-item border-end border-2 me-0">
+  <NavLink
+    className={({ isActive }) =>
+      isActive ? 'nav-link fs-4 active' : 'nav-link fs-4'
+    }
+    to="/about"
+  >
+    About
+  </NavLink>
+</li>
+<li className="nav-item border-end border-2 me-0">
+  <NavLink
+    className={({ isActive }) =>
+      isActive ? 'nav-link fs-4 active' : 'nav-link fs-4'
+    }
+    to="/projects"
+  >
+    Projects
+  </NavLink>
+</li>
+<li className="nav-item border-end border-2 me-0">
+  <NavLink
+    className={({ isActive }) =>
+      isActive ? 'nav-link fs-4 active' : 'nav-link fs-4'
+    }
+    to="/experience"
+  >
+    Experience
+  </NavLink>
+</li>
+<li className="nav-item border-end border-2 me-0">
+  <NavLink
+    className={({ isActive }) =>
+      isActive ? 'nav-link fs-4 active' : 'nav-link fs-4'
+    }
+    to="/other"
+  >
+    Other
+  </NavLink>
+</li>
+
             </ul>
           </div>
         </div>
