@@ -1,0 +1,22 @@
+/* index.css */
+
+/* (1) Tailwind imports (if you’re using Tailwind) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* (2) Your own global overrides go below */
+/* index.css */
+body {
+  background: linear-gradient(120deg, #fdfbfb, #ebedee) !important;
+  background-attachment: fixed !important;
+  background-size: cover !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Any custom utility classes or site-wide styles can go here */
+.text-center {
+  text-align: center;
+}
+
