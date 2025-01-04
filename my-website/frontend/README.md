@@ -24,10 +24,13 @@ cp -R my-website/frontend/build/* .
 
 push GitHub changes
 
+<<<<<<< HEAD
 Note: if github pages tries to run the backend instead of the frontend, run
 touch .nojekyll
 in the main directory
 
+=======
+>>>>>>> bce3e7489740b31f13281a91f10fe2a755b6ef1d
 ## Updating backend:
 cd backend
 git add .
