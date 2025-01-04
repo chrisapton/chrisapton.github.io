@@ -16,10 +16,20 @@ You may also see any lint errors in the console.
 
 ## Updating website:
 
-cd my-website
+cd my-website/frontend
 npm run build
 cd ..
-cp -R my-website/build/* .
+cd ..
+cp -R my-website/frontend/build/* .
 
 push GitHub changes
 
+Note: if github pages tries to run the backend instead of the frontend, run
+touch .nojekyll
+in the main directory
+
+## Updating backend:
+cd backend
+git add .
+git commit -m "Add /run-python-code route"
+git push heroku master

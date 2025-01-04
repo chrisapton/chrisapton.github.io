@@ -35,7 +35,7 @@ const Projects = () => {
   });
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif'}}>
       <h1>Projects</h1>
       <p>Here are my projects:</p>
       <div>
