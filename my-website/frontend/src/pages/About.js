@@ -33,48 +33,54 @@ const About = () => {
         </div>
       </div>
 
-      <div>
-        <img 
-          src="climbing_image.jpg" 
-          alt="Climbing Image" 
-          style={{ 
-            position: 'absolute', 
-            top: '50%', 
-            left: '60%', 
-            width: '300px', 
-            height: '500px', 
-            objectFit: 'cover' 
-          }} 
-        />
+      {/* Education and Hobbies with Image */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: '20px' }}>
+        {/* Left Section - Education and Hobbies */}
+        <div style={{ flex: '1', minWidth: '300px', maxWidth: '600px' }}>
+          <section style={{ marginBottom: '30px' }}>
+            <h2 style={{ fontSize: '1.5em', color: '#444' }}>Education</h2>
+            <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+              <li style={{ marginBottom: '15px' }}>
+                <strong>University of Southern California (USC)</strong>, Los Angeles, CA
+                <br />
+                MS, Applied Data Science (Expected May 2025), GPA: 3.8
+              </li>
+              <li>
+                <strong>University of California, Los Angeles (UCLA)</strong>, Los Angeles, CA
+                <br />
+                BS, Data Theory (Mathematics, Statistics, & Data Science) with a minor in Bioinformatics, GPA: 3.7
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 style={{ fontSize: '1.5em', color: '#444' }}>Hobbies</h2>
+            <p>When I’m not working with data, I enjoy:</p>
+            <ul>
+              <li>Rock climbing at local gyms and outdoor climbing spots</li>
+              <li>Exploring new cafes and restaurants in Los Angeles</li>
+              <li>Participating in hackathons to build innovative solutions</li>
+            </ul>
+          </section>
+        </div>
+
+        {/* Right Section - Climbing Image */}
+        <div style={{ flex: '0 0 300px', marginLeft: '-300px', position: 'relative', textAlign: 'center' }}>
+          <img 
+            src="climbing_image.jpg" 
+            alt="Climbing Image" 
+            style={{ 
+              width: '100%', 
+              height: 'auto', 
+              maxWidth: '300px', 
+              borderRadius: '10px', 
+              objectFit: 'cover', 
+              transform: 'translateX(-300px)',
+              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)'
+            }} 
+          />
+        </div>
       </div>
-
-      <section style={{ marginBottom: '30px' }}>
-        <h2 style={{ fontSize: '1.5em', color: '#444' }}>Education</h2>
-        <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
-          <li style={{ marginBottom: '15px' }}>
-            <strong>University of Southern California (USC)</strong>, Los Angeles, CA
-            <br />
-            MS, Applied Data Science (Expected May 2025), GPA: 3.8
-          </li>
-          <li>
-            <strong>University of California, Los Angeles (UCLA)</strong>, Los Angeles, CA
-            <br />
-            BS, Data Theory (Mathematics, Statistics, & Data Science) with a minor in Bioinformatics, GPA: 3.7
-          </li>
-        </ul>
-      </section>
-
-      <section style={{ marginBottom: '30px' }}>
-        <h2 style={{ fontSize: '1.5em', color: '#444' }}>Hobbies</h2>
-        <p>
-          When I’m not working with data, I enjoy:
-        </p>
-        <ul>
-          <li>Rock climbing at local gyms and outdoor climbing spots</li>
-          <li>Exploring new cafes and restaurants in Los Angeles</li>
-          <li>Participating in hackathons to build innovative solutions</li>
-        </ul>
-      </section>
 
       <section style={{ marginBottom: '30px' }}>
         <h2 style={{ fontSize: '1.5em', color: '#444' }}>Contact</h2>
