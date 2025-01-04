@@ -3,18 +3,23 @@ import React from 'react';
 const About = () => {
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif'}}>
-      <h1 style={{ color: '#333', textAlign: 'center' }}>About Me</h1>
+      <h1>About Me</h1>
       
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', marginBottom: '30px' }}>
         {/* Left Section - Text */}
         <div style={{ flex: '1', minWidth: '300px', marginRight: '20px' }}>
           <h2 style={{ fontSize: '1.5em', color: '#444' }}>Hi, I'm Christopher Apton!</h2>
           <p>
-            I'm currently pursuing my Master's in <strong>Applied Data Science</strong> at the 
-            <strong> University of Southern California</strong>, where I’ve maintained a 3.8 GPA 
-            and am expected to graduate in May 2025. Prior to this, I earned my Bachelor’s degree 
-            in <strong>Data Theory</strong> with a minor in <strong>Bioinformatics</strong> from UCLA, graduating with a 3.7 GPA.
+            I am passionate about uncovering insights and solving complex problems through the power of data. My journey in 
+             <strong> Data Science</strong> has equipped me with a strong foundation in programming, statistical modeling, 
+            and machine learning, along with hands-on experience in tools like <strong>Python, R, SQL, and Power BI</strong>. 
+            I enjoy exploring new technologies and applying creative solutions to real-world challenges. 
+
+            I thrive on continuous learning, whether it’s mastering the latest data visualization techniques or experimenting with 
+            cutting-edge machine learning algorithms. My curiosity drives me to explore how data can shape impactful decisions 
+            and innovate in fields ranging from healthcare to finance.
           </p>
+
           <p>
             Outside of work and academics, I enjoy rock climbing, which has taught me perseverance, 
             creative problem-solving, and a love for adventure. When I'm not scaling walls, I spend time 
@@ -92,6 +97,12 @@ const About = () => {
           <li><strong>GitHub:</strong> <a href="https://github.com/chrisapton" target="_blank" rel="noopener noreferrer">chrisapton</a></li>
           <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/chrisapton" target="_blank" rel="noopener noreferrer">chrisapton</a></li>
         </ul>
+
+        <p>
+          You can also download my resume <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" 
+          style={{ color: '#007bff', textDecoration: 'none', fontWeight: 'bold' }}> here</a>.
+        </p>
+    
       </section>
     </div>
   );

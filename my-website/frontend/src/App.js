@@ -1,4 +1,4 @@
-import { NavLink, Routes, Route } from 'react-router-dom';
+import { NavLink, Routes, Route, Navigate} from 'react-router-dom';
 import About from './pages/About';
 import Projects from './pages/Projects';
 import Experience from './pages/Experience';
@@ -76,7 +76,7 @@ export default function App() {
 
       <div className="container mt-5">
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<Navigate to="/about" replace />} />
           <Route path="/about" element={<About />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/experience" element={<Experience />} />
@@ -85,9 +85,5 @@ export default function App() {
       </div>
     </div>
   );
-}
-
-function HomePage() {
-  return <h1>Home Page</h1>;
 }
 
