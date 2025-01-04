@@ -16,10 +16,16 @@ You may also see any lint errors in the console.
 
 ## Updating website:
 
-cd my-website
+cd my-website/frontend
 npm run build
 cd ..
-cp -R my-website/build/* .
+cd ..
+cp -R my-website/frontend/build/* .
 
 push GitHub changes
 
+## Updating backend:
+cd backend
+git add .
+git commit -m "Add /run-python-code route"
+git push heroku master
