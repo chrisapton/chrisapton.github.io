@@ -1,49 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 const Projects = () => {
-  const [projects] = useState([
-    {
-      title: 'Portfolio Website',
-      description: 'A personal portfolio website to showcase my work.',
-      github: 'https://github.com/username/portfolio',
-      startDate: '2023-01-01',
-      endDate: '2023-12-15',
-      ongoing: false,
-    },
-    {
-      title: 'Task Manager App',
-      description: 'A task management tool with drag-and-drop functionality.',
-      github: 'https://github.com/username/task-manager',
-      startDate: '2023-06-01',
-      endDate: '2023-10-05',
-      ongoing: false,
-    },
-    {
-      title: 'Blog Platform',
-      description: 'An ongoing project for a personal blog platform.',
-      github: 'https://github.com/username/blog-platform',
-      startDate: '2023-08-01',
-      ongoing: true, // This project is ongoing
-    },
-  ]);
+  const [projects, setProjects] = useState([]);
 
-  // Sort projects: Ongoing projects at the top, then by end date (newest first)
-  const sortedProjects = [...projects].sort((a, b) => {
-    if (a.ongoing && !b.ongoing) return -1; // Ongoing projects come first
-    if (!a.ongoing && b.ongoing) return 1;
-    return new Date(b.endDate || '9999-12-31') - new Date(a.endDate || '9999-12-31'); // Sort by end date
-  });
+  // Fetch projects from the backend
+  useEffect(() => {
+    fetch("https://backend-personal-website-ee5a10ef78c9.herokuapp.com/projects")
+      .then((response) => response.json())
+      .then((data) => setProjects(data))
+      .catch((error) => console.error("Error fetching projects:", error));
+  }, []);
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif'}}>
+    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <h1>Projects</h1>
       <p>Here are my projects:</p>
       <div>
-        {sortedProjects.map((project, index) => (
+        {projects.map((project, index) => (
           <div key={index} style={styles.projectCard}>
-            {/* Header section with title, GitHub link, and date range */}
             <div style={styles.header}>
-              {/* Title and GitHub link */}
               <div style={styles.title}>
                 {project.title}
                 <a
@@ -59,16 +34,55 @@ const Projects = () => {
                   />
                 </a>
               </div>
-              {/* Date range */}
               <div style={styles.date}>
-                {new Date(project.startDate).toLocaleDateString()} -{' '}
+                {new Date(project.startDate).toLocaleDateString()} -{" "}
                 {project.ongoing
-                  ? 'Ongoing'
-                  : new Date(project.endDate).toLocaleDateString()}
+                  ? "Ongoing"
+                  : project.endDate
+                  ? new Date(project.endDate).toLocaleDateString()
+                  : "No End Date"}
               </div>
             </div>
-            {/* Description */}
             <p style={styles.description}>{project.description}</p>
+
+            {/* Render the demo dynamically based on demoType */}
+            {project.demoType === "link" && (
+              <a
+                href={project.demoContent}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={styles.demoLink}
+              >
+                Link to Project
+              </a>
+            )}
+            {project.demoType === "image" && (
+              <img
+                src={project.demoContent}
+                alt={`${project.title} Demo`}
+                style={styles.demoImage}
+              />
+            )}
+            {project.demoType === "code" && (
+              <pre style={styles.codeSnippet}>
+                {project.demoContent}
+              </pre>
+            )}
+            {project.demoType === "script" && (
+              <p style={styles.script}>
+                Run: <code>{project.demoContent}</code>
+              </p>
+            )}
+
+            {/* Skills Section */}
+            <div>
+              <strong>Skills:</strong>{" "}
+              {project.skills.map((skill, i) => (
+                <span key={i} style={styles.skill}>
+                  {skill}
+                </span>
+              ))}
+            </div>
           </div>
         ))}
       </div>
@@ -78,40 +92,73 @@ const Projects = () => {
 
 const styles = {
   projectCard: {
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    padding: '16px',
-    margin: '16px 0',
-    backgroundColor: '#f9f9f9',
+    border: "1px solid #ccc",
+    borderRadius: "8px",
+    padding: "16px",
+    margin: "16px 0",
+    backgroundColor: "#f9f9f9",
   },
   header: {
-    display: 'flex',
-    justifyContent: 'space-between', // Push title and date to opposite sides
-    alignItems: 'center',
-    marginBottom: '8px',
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "8px",
   },
   title: {
-    fontWeight: 'bold',
-    fontSize: '1.2rem',
-    display: 'flex',
-    alignItems: 'center',
+    fontWeight: "bold",
+    fontSize: "1.2rem",
+    display: "flex",
+    alignItems: "center",
   },
   githubLink: {
-    marginLeft: '8px',
+    marginLeft: "8px",
   },
   githubLogo: {
-    width: '20px',
-    height: '20px',
+    width: "20px",
+    height: "20px",
   },
   date: {
-    fontSize: '1rem',
-    color: '#555',
-    whiteSpace: 'nowrap', // Prevents wrapping for the date
+    fontSize: "1rem",
+    color: "#555",
+    whiteSpace: "nowrap",
   },
   description: {
-    margin: '0',
-    fontSize: '1rem',
-    color: '#333',
+    margin: "0",
+    fontSize: "1rem",
+    color: "#333",
+  },
+  demoLink: {
+    display: "block",
+    marginTop: "10px",
+    textDecoration: "none",
+    color: "#007bff",
+  },
+  demoImage: {
+    display: "block",
+    marginTop: "10px",
+    maxWidth: "100%",
+    height: "auto",
+    borderRadius: "8px",
+  },
+  codeSnippet: {
+    backgroundColor: "#f4f4f4",
+    padding: "10px",
+    borderRadius: "5px",
+    marginTop: "10px",
+    fontFamily: "monospace",
+  },
+  script: {
+    marginTop: "10px",
+    fontFamily: "monospace",
+  },
+  skill: {
+    display: "inline-block",
+    marginRight: "8px",
+    padding: "4px 8px",
+    backgroundColor: "#007bff",
+    color: "#fff",
+    borderRadius: "4px",
+    fontSize: "0.85rem",
   },
 };
 
