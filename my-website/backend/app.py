@@ -20,7 +20,7 @@ projects_data = [
     {
         "title": "CalHacks 10.0: KnowBotics",
         "description": "Developed a homework helper bot powered by a Large Language Model (LLM) designed to provide personalized help by analyzing lecture slides, PDFs, and homework assignments, offering customized support for students’ academic tasks.",
-        "github": "https://github.com/username/knowbotics",
+        "github": "https://github.com/chrisapton/CalHackss",
         "demoType": None,  
         "demoContent": None,
         "startDate": "2023-10-01",
@@ -29,26 +29,15 @@ projects_data = [
         "skills": ["Python", "OpenAI API", "LlamaIndex", "Reflex", "Natural Language Processing"]
     },
     {
-        "title": "Blog Platform",
-        "description": "An ongoing project for a personal blog platform.",
-        "github": "https://github.com/username/blog-platform",
-        "demoType": "image",  # Indicates an image demo
-        "demoContent": "https://via.placeholder.com/300x200.png?text=Blog+Platform",  # URL to an image
-        "startDate": "2023-08-01",
-        "endDate": None,
-        "ongoing": True,
-        "skills": ["Node.js", "MongoDB", "Express"]
-    },
-    {
         "title": "Heart Disease Prediction",
-        "description": "A machine learning project to predict heart disease using Python.",
-        "github": "https://github.com/username/heart-disease-prediction",
-        "demoType": "script",  # Indicates running a Python script
-        "demoContent": "python predict_heart_disease.py --input sample_data.csv",  # CLI command
+        "description": "Led the development of an XGBoost model with tuned hyperparameters, leveraging Cross-Validation to predict heart disease. Preprocessed data to improve model performance: Removed outliers and feature engineering. Developed in R. Optimized the model using Randomized Search for hyperparameter tuning achieving a 90% validation accuracy",
+        "github": "https://github.com/chrisapton/Heart-Disease-Prediction",
+        "demoType": None,
+        "demoContent": None,  
         "startDate": "2022-06-01",
         "endDate": "2022-08-01",
         "ongoing": False,
-        "skills": ["Python", "Machine Learning", "XGBoost"]
+        "skills": ["R", "Machine Learning", "XGBoost"]
     }
 ]
 
