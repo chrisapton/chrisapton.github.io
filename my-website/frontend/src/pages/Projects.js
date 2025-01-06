@@ -14,7 +14,7 @@ const Projects = () => {
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <h1>Projects</h1>
-      <p>Here are my projects:</p>
+      <p>Here are some of my projects:</p>
       <div>
         {projects.map((project, index) => (
           <div key={index} style={styles.projectCard}>
@@ -35,11 +35,13 @@ const Projects = () => {
                 </a>
               </div>
               <div style={styles.date}>
-                {new Date(project.startDate).toLocaleDateString()} -{" "}
+                {project.startDate
+                  ? new Date(project.startDate).toLocaleDateString("en-US", { timeZone: "UTC" })
+                  : "No Start Date"} -{" "}
                 {project.ongoing
                   ? "Ongoing"
                   : project.endDate
-                  ? new Date(project.endDate).toLocaleDateString()
+                  ? new Date(project.endDate).toLocaleDateString("en-US", { timeZone: "UTC" })
                   : "No End Date"}
               </div>
             </div>

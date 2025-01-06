@@ -1,21 +1,34 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from datetime import datetime
 import os
+
 
 app = Flask(__name__)
 CORS(app)
 # Sample project data
-projects_data = [
+projects_data = sorted([
     {
         "title": "Personal Website",
-        "description": "A personal website to showcase my work.",
+        "description": "A personal website to showcase my work. The frontend is in React and the backend is using Flask hosted on Heroku.",
         "github": "https://github.com/chrisapton/chrisapton.github.io",
         "demoType": "link",  # Can be "link", "image", "code", or "script"
         "demoContent": "https://chrisapton.github.io/",  # URL for the demo link
         "startDate": "2025-01-01",
         "endDate": "2025-01-10",
         "ongoing": False,
-        "skills": ["React", "HTML", "CSS", "JavaScript", "Heroku"]
+        "skills": ["React", "HTML", "CSS", "JavaScript", "Flask"]
+    },
+    {
+        "title": "Round Robin Website",
+        "description": "Designed and edited a responsive website for a local retail store to improve user experience and showcase products. Performed updates as requested from the owner, including content changes, UI refinements, and SEO optimizations to enhance online visibility. Changed where the website was hosted, reducing costs by 100%.",
+        "github": "https://github.com/chrisapton/round_robin",
+        "demoType": "link",  
+        "demoContent": "https://roundrobinstore.com/", 
+        "startDate": "2024-10-01",
+        "endDate": "2024-10-30", 
+        "ongoing": False,
+        "skills": ["HTML", "CSS", "JavaScript"]
     },
     {
         "title": "CalHacks 10.0: KnowBotics",
@@ -30,7 +43,7 @@ projects_data = [
     },
     {
         "title": "Heart Disease Prediction",
-        "description": "Led the development of an XGBoost model with tuned hyperparameters, leveraging Cross-Validation to predict heart disease. Preprocessed data to improve model performance: Removed outliers and feature engineering. Developed in R. Optimized the model using Randomized Search for hyperparameter tuning achieving a 90% validation accuracy",
+        "description": "Led the development of an XGBoost model with tuned hyperparameters, leveraging Cross-Validation to predict heart disease. Preprocessed data to improve model performance: Removed outliers and feature engineering. Developed in R. Optimized the model using Randomized Search for hyperparameter tuning achieving a 90% validation accuracy.",
         "github": "https://github.com/chrisapton/Heart-Disease-Prediction",
         "demoType": None,
         "demoContent": None,  
@@ -39,7 +52,21 @@ projects_data = [
         "ongoing": False,
         "skills": ["R", "Machine Learning", "XGBoost"]
     }
-]
+], key=lambda project: (
+    not project["ongoing"],  # Ongoing projects first
+    project["endDate"] if project["endDate"] else "9999-12-31"  # Sort by endDate
+), reverse=True)  # Newest projects first
+
+def format_date(date_str):
+    if not date_str:  # Handle None dates
+        return None
+    date_obj = datetime.strptime(date_str, "%Y-%m-%d") 
+    return date_obj.strftime("%Y-%m-%dT00:00:00Z") 
+
+for project in projects_data:
+    project["startDate"] = format_date(project["startDate"])  
+    project["endDate"] = format_date(project["endDate"])  
+
 
 
 @app.route("/")
