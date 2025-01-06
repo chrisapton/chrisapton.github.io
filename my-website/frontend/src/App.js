@@ -58,16 +58,6 @@ export default function App() {
     Experience
   </NavLink>
 </li>
-<li className="nav-item border-end border-2 me-0">
-  <NavLink
-    className={({ isActive }) =>
-      isActive ? 'nav-link fs-4 active' : 'nav-link fs-4'
-    }
-    to="/other"
-  >
-    Other
-  </NavLink>
-</li>
 
             </ul>
           </div>
@@ -80,7 +70,6 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/experience" element={<Experience />} />
-          <Route path="/other" element={<Other />} />
         </Routes>
       </div>
     </div>
