@@ -18,15 +18,15 @@ projects_data = [
         "skills": ["React", "HTML", "CSS", "JavaScript", "Heroku"]
     },
     {
-        "title": "Task Manager App",
-        "description": "A task management tool with drag-and-drop functionality.",
-        "github": "https://github.com/username/task-manager",
-        "demoType": "code",  # Indicates code snippets or instructions to run
-        "demoContent": "npm start in the terminal to run the app locally",  # Instructions
-        "startDate": "2023-06-01",
-        "endDate": "2023-10-05",
+        "title": "CalHacks 10.0: KnowBotics",
+        "description": "Developed a homework helper bot powered by a Large Language Model (LLM) designed to provide personalized help by analyzing lecture slides, PDFs, and homework assignments, offering customized support for students’ academic tasks.",
+        "github": "https://github.com/username/knowbotics",
+        "demoType": None,  
+        "demoContent": None,
+        "startDate": "2023-10-01",
+        "endDate": "2023-10-31", 
         "ongoing": False,
-        "skills": ["React", "Django", "PostgreSQL"]
+        "skills": ["Python", "OpenAI API", "LlamaIndex", "Reflex", "Natural Language Processing"]
     },
     {
         "title": "Blog Platform",

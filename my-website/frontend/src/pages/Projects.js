@@ -73,7 +73,9 @@ const Projects = () => {
                 Run: <code>{project.demoContent}</code>
               </p>
             )}
-
+            {!project.demoType && (
+              <p style={styles.noDemo}></p>
+            )}
             {/* Skills Section */}
             <div>
               <strong>Skills:</strong>{" "}
