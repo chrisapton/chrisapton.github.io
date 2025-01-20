@@ -51,7 +51,39 @@ projects_data = sorted([
         "endDate": "2022-08-01",
         "ongoing": False,
         "skills": ["R", "Machine Learning", "XGBoost"]
-    }
+    },
+    {
+        "title": "Casca Project",
+        "description": "This project processes financial documents (e.g., bank statements) to evaluate loan eligibility using OpenAI's GPT-4 model (gpt-4o). The workflow includes converting PDF files into images, organizing them into folders, and analyzing the data using GPT-4 along with a custom text prompt.",
+        "github": "https://github.com/chrisapton/CascaProject",
+        "demoType": None,
+        "demoContent": None,  
+        "startDate": "2025-01-13",
+        "endDate": "2025-01-14",
+        "ongoing": False,
+        "skills": ["Python", "OpenAI GPT Models", "Natural Language Processing (NLP)", "pdf2image", "OpenCV", "Prompt Engineering", "Pandas", "Git", "Financial Analysis"]
+    },
+    {
+    "title": "SetupForge",
+    "description": "SetupForge is a Windows desktop application built with C++ and wxWidgets that automates software installation and system configuration tasks. It allows users to create, edit, and execute custom installation scripts that can run executable files, move files, create directories, manage environment variables, edit the registry, and map network drives. The application features a user-friendly graphical interface for seamless configuration.",
+    "github": "https://github.com/JoeCool16/SetupForge",
+    "demoType": "link",
+    "demoContent": "https://github.com/JoeCool16/SetupForge/releases/download/v1.0/SetupForge.exe",  
+    "startDate": "2025-01-10",
+    "endDate": "2025-01-21",
+    "ongoing": False,
+    "skills": [
+        "C++", 
+        "wxWidgets", 
+        "Windows API", 
+        "Batch Scripting", 
+        "File System Management", 
+        "Registry Editing", 
+        "Environment Variable Management", 
+        "Git", 
+        "Software Deployment"
+    ]
+}
 ], key=lambda project: (
     not project["ongoing"],  # Ongoing projects first
     project["endDate"] if project["endDate"] else "9999-12-31"  # Sort by endDate
