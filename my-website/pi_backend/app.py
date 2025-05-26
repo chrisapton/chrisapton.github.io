@@ -1,8 +1,14 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from datetime import datetime
+from dotenv import load_dotenv
 import os
+import requests
 
+load_dotenv()
+
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+USERNAME = "chrisapton"
 
 app = Flask(__name__)
 CORS(app)
@@ -112,12 +118,64 @@ def run_python_code():
     result = {"output": input_data[::-1]}  # Reverse the input string
     return jsonify(result)
 
+headers = {"Authorization": f"Bearer {GITHUB_TOKEN}"}
+
+def fetch_starred_repos():
+    url = f"https://api.github.com/users/{USERNAME}/starred?per_page=100"
+    response = requests.get(url, headers=headers)
+    return [repo for repo in response.json() if not repo.get("private")]
+
+def fetch_owned_public_repos():
+    url = f"https://api.github.com/users/{USERNAME}/repos?type=owner&per_page=100"
+    response = requests.get(url, headers=headers)
+    return [repo for repo in response.json() if not repo.get("private")]
+
+def is_user_a_contributor(owner, repo_name):
+    if owner.lower() == USERNAME.lower():
+        return True  # it's your repo
+    url = f"https://api.github.com/repos/{owner}/{repo_name}/contributors"
+    response = requests.get(url, headers=headers)
+    if response.status_code != 200:
+        return False
+    contributors = response.json()
+    return any(user["login"].lower() == USERNAME.lower() for user in contributors)
+
+@app.route('/repos')
+def repos_complete():
+    contributed_repos = []
+
+    starred = fetch_starred_repos()
+    owned = fetch_owned_public_repos()
+    all_repos = starred + owned
+
+    seen = set()
+
+    for repo in all_repos:
+        owner = repo["owner"]["login"]
+        name = repo["name"]
+        full_name = f"{owner}/{name}"
+        url = repo["html_url"]
+
+        if full_name in seen:
+            continue
+        seen.add(full_name)
+
+        if is_user_a_contributor(owner, name):
+            contributed_repos.append({"name": full_name, "url": url})
+        else:
+            print(f"Skipped (not a contributor): {full_name}")
+
+    return jsonify(contributed_repos)
+
+
+
+
 # New route to serve project data
 @app.route("/projects", methods=["GET"])
 def get_projects():
     return jsonify(projects_data)
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Get the port from the environment, default to 5000
+    port = int(os.environ.get('PORT', 5050))
     app.run(host='0.0.0.0', port=port, debug=True)
 
