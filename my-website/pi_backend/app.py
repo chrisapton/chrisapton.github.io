@@ -4,11 +4,14 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 import requests
+import json
 
 load_dotenv()
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 USERNAME = "chrisapton"
+HEADERS = {"Authorization": f"Bearer {GITHUB_TOKEN}"}
+CACHE_FILE = "contributed_repos.json"
 
 app = Flask(__name__)
 CORS(app)
@@ -118,31 +121,60 @@ def run_python_code():
     result = {"output": input_data[::-1]}  # Reverse the input string
     return jsonify(result)
 
-headers = {"Authorization": f"Bearer {GITHUB_TOKEN}"}
-
 def fetch_starred_repos():
     url = f"https://api.github.com/users/{USERNAME}/starred?per_page=100"
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=HEADERS)
+    if response.status_code != 200:
+        print("GitHub API Error:", response.status_code, response.text)
+        return []  # fallback to avoid crash
     return [repo for repo in response.json() if not repo.get("private")]
 
 def fetch_owned_public_repos():
     url = f"https://api.github.com/users/{USERNAME}/repos?type=owner&per_page=100"
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=HEADERS)
+    if response.status_code != 200:
+        print("GitHub API Error:", response.status_code, response.text)
+        return []  # fallback to avoid crash
+    
     return [repo for repo in response.json() if not repo.get("private")]
 
-def is_user_a_contributor(owner, repo_name):
+def is_user_a_contributor(owner, name):
     if owner.lower() == USERNAME.lower():
-        return True  # it's your repo
-    url = f"https://api.github.com/repos/{owner}/{repo_name}/contributors"
-    response = requests.get(url, headers=headers)
+        return True
+    url = f"https://api.github.com/repos/{owner}/{name}/contributors"
+    response = requests.get(url, headers=HEADERS)
     if response.status_code != 200:
         return False
     contributors = response.json()
     return any(user["login"].lower() == USERNAME.lower() for user in contributors)
 
+def get_commit_dates(owner, repo):
+    url = f"https://api.github.com/repos/{owner}/{repo}/commits"
+    params = {"author": USERNAME, "per_page": 100}
+    response = requests.get(url, headers=HEADERS, params=params)
+    if response.status_code != 200:
+        return None, None
+    commits = response.json()
+    if not commits:
+        return None, None
+    latest = commits[0]["commit"]["author"]["date"]
+    first = commits[-1]["commit"]["author"]["date"]
+    return first, latest
+
+def load_cache():
+    if not os.path.exists(CACHE_FILE):
+        return {}
+    with open(CACHE_FILE, "r") as f:
+        return {repo["title"]: repo for repo in json.load(f)}
+
+def save_cache(data_dict):
+    with open(CACHE_FILE, "w") as f:
+        json.dump(list(data_dict.values()), f, indent=2)
+
+
 @app.route('/repos')
 def repos_complete():
-    contributed_repos = []
+    contributed_repos = load_cache()
 
     starred = fetch_starred_repos()
     owned = fetch_owned_public_repos()
@@ -155,20 +187,52 @@ def repos_complete():
         name = repo["name"]
         full_name = f"{owner}/{name}"
         url = repo["html_url"]
+        pushed_at = repo.get("pushed_at")
 
         if full_name in seen:
             continue
         seen.add(full_name)
 
+        # Skip if already cached
+        if name in contributed_repos:
+            continue
+
         if is_user_a_contributor(owner, name):
-            contributed_repos.append({"name": full_name, "url": url})
+            first_commit, last_commit = get_commit_dates(owner, name)
+
+            if not first_commit:
+                first_commit = pushed_at
+            if not last_commit:
+                last_commit = pushed_at
+            
+            # LLM part to chatgpt to get a description and skills set up from the github link.
+            # <TODO>
+
+            contributed_repos[full_name] = {
+                "title": name,
+                "description": "",
+                "github": url,
+                "demoType": None,
+                "demoContent": None,
+                "startDate": first_commit,
+                "endDate": pushed_at,
+                "ongoing": False,
+                "skills": []
+            }
         else:
             print(f"Skipped (not a contributor): {full_name}")
 
-    return jsonify(contributed_repos)
+    # Save updated cache
+    save_cache(contributed_repos)
 
+    # Return sorted list
+    sorted_list = sorted(
+        contributed_repos.values(),
+        key=lambda x: x["endDate"] or "",
+        reverse=True
+    )
 
-
+    return jsonify(sorted_list)
 
 # New route to serve project data
 @app.route("/projects", methods=["GET"])
