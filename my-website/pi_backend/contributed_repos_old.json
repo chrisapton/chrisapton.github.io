@@ -1,7 +1,7 @@
 [
   {
     "title": "Music-KG-Project",
-    "description": "The Music Sampling Knowledge Graph project involves setting up a Neo4j database, injecting data into it, and launching a Streamlit application. The repository includes directories for documentation, knowledge graph data, notebooks, and scrapers, along with a `requirements.txt` file for dependencies. ",
+    "description": "The Music-KG-Project is a comprehensive initiative that constructs a knowledge graph centered on music sampling, integrating data from various sources to map relationships between artists, tracks, and samples. It features a Neo4j database for efficient data storage and retrieval, along with a Streamlit application for interactive exploration of the knowledge graph. ",
     "github": "https://github.com/chrisapton/Music-KG-Project",
     "demoType": null,
     "demoContent": null,
@@ -11,13 +11,13 @@
     "skills": [
       "Python",
       "Neo4j",
-      "Docker",
-      "Streamlit"
+      "Streamlit",
+      "Docker"
     ]
   },
   {
     "title": "CascaProject",
-    "description": "The Casca Project automates the evaluation of loan eligibility by processing financial documents, such as bank statements, through a workflow that converts PDFs into images and analyzes them using OpenAI's GPT-4 model. This approach streamlines financial assessments by integrating advanced AI capabilities. ",
+    "description": "The Casca Project is designed to assess loan eligibility by analyzing financial documents, such as bank statements, using OpenAI's GPT-4 model. It converts PDFs into images, organizes them systematically, and employs a tailored prompt to extract and evaluate relevant financial data. ",
     "github": "https://github.com/chrisapton/CascaProject",
     "demoType": null,
     "demoContent": null,
@@ -33,7 +33,7 @@
   },
   {
     "title": "SetupForge",
-    "description": "SetupForge is a Windows desktop application developed in C++ using wxWidgets, designed to automate software installations and system configurations. It enables users to create and execute custom scripts for tasks like running executables, managing files and directories, setting environment variables, editing the registry, and mapping network drives. ",
+    "description": "SetupForge is a Windows desktop application developed in C++ using wxWidgets, designed to automate software installation and system configuration tasks. It enables users to create, edit, and execute custom installation scripts for operations such as running executables, managing files and directories, setting environment variables, editing the registry, and mapping network drives. ",
     "github": "https://github.com/JoeCool16/SetupForge",
     "demoType": null,
     "demoContent": null,
@@ -43,14 +43,14 @@
     "skills": [
       "C++",
       "wxWidgets",
-      "Windows API",
-      "Shell Scripting",
+      "Windows",
+      "Software Installation",
       "System Configuration"
     ]
   },
   {
     "title": "cs566-project",
-    "description": "SegOne is a channel-wise 1D convolutional U-Net designed for efficient and accurate segmentation of one-dimensional data. The project includes comprehensive documentation, configuration files, datasets, and the core implementation of the SegOne model.  ",
+    "description": "SegOne is a channel-wise 1D convolutional U-Net designed for efficient and accurate segmentation tasks. The project includes a comprehensive implementation with training scripts, evaluation tools, and detailed documentation. ",
     "github": "https://github.com/byuns-usc/cs566-project",
     "demoType": null,
     "demoContent": null,
@@ -60,28 +60,26 @@
     "skills": [
       "Python",
       "PyTorch",
-      "NumPy",
-      "Matplotlib",
-      "Scikit-learn"
+      "U-Net",
+      "1D Convolutional Neural Networks",
+      "Machine Learning",
+      "Deep Learning"
     ]
   },
   {
     "title": "E-DataSync-Distributed-E-Commerce-Inventory-Management",
-    "description": "E-DataSync is a distributed e-commerce inventory management system designed to efficiently handle database management and query processing. The project includes a user-friendly web application interface, with a clear repository structure comprising backend, frontend, and application pages. ",
+    "description": "E-DataSync is a distributed e-commerce inventory management system that integrates backend database management with a user-friendly frontend interface, facilitating efficient inventory tracking and management. ",
     "github": "https://github.com/hjang8659/E-DataSync-Distributed-E-Commerce-Inventory-Management",
     "demoType": null,
     "demoContent": null,
     "startDate": "2024-02-28T05:45:43Z",
     "endDate": "2024-05-02T06:49:03Z",
     "ongoing": false,
-    "skills": [
-      "Python",
-      "Streamlit"
-    ]
+    "skills": []
   },
   {
     "title": "pe-consensus-scoring",
-    "description": "The PE Consensus Scoring project deploys algorithms on AWS Lambda to process messages related to consensus requests and article publishing, utilizing SQS queues for efficient handling.  ",
+    "description": "The PE Consensus Scoring project implements algorithms for consensus and scoring, deployed on AWS Lambda, to facilitate efficient processing of tasks such as consensus requests and article publishing.  ",
     "github": "https://github.com/Goodly/pe-consensus-scoring",
     "demoType": null,
     "demoContent": null,
@@ -89,33 +87,26 @@
     "endDate": "2024-05-28T10:08:12Z",
     "ongoing": false,
     "skills": [
-      "Python",
       "AWS Lambda",
-      "Amazon SQS"
+      "SQS",
+      "Python",
+      "CSV"
     ]
   },
   {
     "title": "software-dev",
-    "description": "The \"software-dev\" repository contains prototype files developed by the Public Editor Software Development Team. ([github.com](https://github.com/Goodly/software-dev?utm_source=openai)) ",
+    "description": "The software-dev repository contains prototype files developed by the Public Editor Software Development Team, including components like web scrapers, Chrome extensions, and mobile applications. ([github.com](https://github.com/Goodly/software-dev?utm_source=openai)) ",
     "github": "https://github.com/Goodly/software-dev",
     "demoType": null,
     "demoContent": null,
     "startDate": "2021-03-03T20:49:34Z",
     "endDate": "2022-03-22T12:23:45Z",
     "ongoing": false,
-    "skills": [
-      "Java",
-      "JavaScript",
-      "HTML",
-      "CSS",
-      "Dart",
-      "Flutter",
-      "Python"
-    ]
+    "skills": []
   },
   {
     "title": "2022-wi-stats21",
-    "description": "The repository contains instructional materials for a statistics course, including Jupyter notebooks, PDFs, and scripts covering topics such as Git basics, Jupyter Notebook usage, and fundamental data types. ",
+    "description": "The repository at [https://github.com/chrisapton/2022-wi-stats21](https://github.com/chrisapton/2022-wi-stats21) contains course materials for an Introduction to Statistical Methods class, including lecture notes, assignments, and code examples. ",
     "github": "https://github.com/chrisapton/2022-wi-stats21",
     "demoType": null,
     "demoContent": null,
@@ -124,14 +115,15 @@
     "ongoing": false,
     "skills": [
       "Python",
+      "R",
       "Jupyter Notebook",
       "Git",
-      "TeX"
+      "LaTeX"
     ]
   },
   {
     "title": "CalHackss",
-    "description": "The CalHackss repository contains partial code from a project developed during the CalHacks hackathon. Due to GitHub's 50MB storage limit, the full codebase isn't uploaded. The repository includes various directories and files, such as `app.py`, `my_script.py`, and a `README.md` file, which provides a brief overview of the project's scope and limitations. ",
+    "description": "The CalHackss repository contains a portion of the code developed during the CalHacks hackathon. Due to GitHub's storage limitations, the full codebase isn't uploaded.  ",
     "github": "https://github.com/chrisapton/CalHackss",
     "demoType": null,
     "demoContent": null,
@@ -141,13 +133,13 @@
     "skills": [
       "Python",
       "Flask",
-      "Jupyter Notebook",
-      "HTML"
+      "Jinja2",
+      "Reflex"
     ]
   },
   {
     "title": "chrisapton.github.io",
-    "description": "The repository `chrisapton.github.io` contains the source code for my personal website, including HTML, CSS, JavaScript files, and assets like images and a PDF resume. ",
+    "description": "The repository at [chrisapton.github.io](https://github.com/chrisapton/chrisapton.github.io) contains the source code for my personal website, including HTML, CSS, JavaScript files, and assets like images and PDFs. ",
     "github": "https://github.com/chrisapton/chrisapton.github.io",
     "demoType": null,
     "demoContent": null,
@@ -158,13 +150,12 @@
       "HTML",
       "CSS",
       "JavaScript",
-      "React",
       "GitHub Pages"
     ]
   },
   {
     "title": "Coding_Assessment_2024",
-    "description": "The Applicant Compatibility Scoring System is a Python script that evaluates candidates for a technical team by calculating compatibility scores based on attributes such as intelligence, strength, endurance, and tolerance for spicy food. It utilizes NumPy and pandas for data processing and requires an input JSON file named `input.json` to operate.  ",
+    "description": "The Applicant Compatibility Scoring System is a Python script that evaluates candidates for a technical team by calculating compatibility scores based on attributes such as intelligence, strength, endurance, and spicy food tolerance. It utilizes NumPy and pandas for data processing and requires an input JSON file named `input.json` to operate. ",
     "github": "https://github.com/chrisapton/Coding_Assessment_2024",
     "demoType": null,
     "demoContent": null,
@@ -179,7 +170,7 @@
   },
   {
     "title": "Heart-Disease-Prediction",
-    "description": "The Heart Disease Prediction project involves analyzing heart disease data using R to develop predictive models. The repository contains R Markdown files, datasets, and a PDF report detailing the analysis and findings. ",
+    "description": "The Heart Disease Prediction project involves analyzing heart disease data using R to develop predictive models. It includes R Markdown files detailing the analysis process, datasets for training and testing, and a PDF summarizing the findings. ",
     "github": "https://github.com/chrisapton/Heart-Disease-Prediction",
     "demoType": null,
     "demoContent": null,
@@ -188,15 +179,12 @@
     "ongoing": false,
     "skills": [
       "R",
-      "R Markdown",
-      "ggplot2",
-      "caret",
-      "tidyverse"
+      "R Markdown"
     ]
   },
   {
     "title": "MITHacks",
-    "description": "Enlighten Me is a web application that facilitates real-time debates on controversial topics, featuring a Python backend with Flask and a frontend built using HTML, CSS, JavaScript, and React. Every five minutes, the platform refreshes with a new topic, clearing the chat to encourage fresh discussions.  ",
+    "description": "Enlighten Me is a web application that facilitates real-time debates on controversial topics. Built with a Python Flask backend and a frontend utilizing HTML, CSS, JavaScript, and React, it presents users with a \"Change My Mind\" image featuring a contentious statement. Participants engage in a five-minute discussion before the topic refreshes, clearing the chat for a new conversation. ",
     "github": "https://github.com/chrisapton/MITHacks",
     "demoType": null,
     "demoContent": null,
@@ -206,15 +194,15 @@
     "skills": [
       "Python",
       "Flask",
-      "React",
       "HTML",
       "CSS",
-      "JavaScript"
+      "JavaScript",
+      "React"
     ]
   },
   {
     "title": "projects",
-    "description": "The GitHub repository at [https://github.com/chrisapton/projects](https://github.com/chrisapton/projects) contains a `README.md` file and a `hello.txt` file. However, it lacks a detailed description, website link, or specified topics, making it challenging to provide a comprehensive overview of its contents. ",
+    "description": "The GitHub repository at [https://github.com/chrisapton/projects](https://github.com/chrisapton/projects) currently contains a `README.md` file and a `hello.txt` file. However, it lacks a detailed description or additional content. ",
     "github": "https://github.com/chrisapton/projects",
     "demoType": null,
     "demoContent": null,
@@ -239,7 +227,7 @@
   },
   {
     "title": "STATS-199-Research-SPR-2023",
-    "description": "The STATS-199-Research-SPR-2023 repository contains materials from a research project conducted during the Spring 2023 semester. It includes Jupyter notebooks (`STATS_199_1.ipynb`, `STATS_199_ARIMAX.ipynb`), a final project report (`STATS_199_Final_Project.pdf`), code documentation (`STATS_199_code.pdf`), and a data file (`submission.csv`).  ",
+    "description": "The STATS-199-Research-SPR-2023 repository contains materials from a research project conducted during the Spring 2023 semester. It includes Jupyter notebooks (`STATS_199_1.ipynb`, `STATS_199_ARIMAX.ipynb`), a final project report (`STATS_199_Final_Project.pdf`), code documentation (`STATS_199_code.pdf`), and a submission file (`submission.csv`). These resources collectively document the project's methodology, analysis, and findings. ",
     "github": "https://github.com/chrisapton/STATS-199-Research-SPR-2023",
     "demoType": null,
     "demoContent": null,
@@ -248,11 +236,10 @@
     "ongoing": false,
     "skills": [
       "Python",
-      "Jupyter Notebook",
-      "pandas",
-      "NumPy",
-      "Matplotlib",
-      "ARIMAX"
+      "Jupyter Notebooks",
+      "ARIMAX",
+      "Data Analysis",
+      "Time Series Forecasting"
     ]
   }
 ]

@@ -6,6 +6,8 @@ node_modules/
 /.pnp
 .pnp.js
 
+
+
 # testing
 /coverage
 
@@ -13,6 +15,8 @@ node_modules/
 
 # production
 /build
+
+/my-website/pi_backend/venv/
 
 # misc
 .cache/

@@ -2,13 +2,17 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from datetime import datetime
 from dotenv import load_dotenv
+from openai import OpenAI
 import os
 import requests
 import json
+import re
+
 
 load_dotenv()
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+
 USERNAME = "chrisapton"
 HEADERS = {"Authorization": f"Bearer {GITHUB_TOKEN}"}
 CACHE_FILE = "contributed_repos.json"
@@ -163,9 +167,11 @@ def get_commit_dates(owner, repo):
 
 def load_cache():
     if not os.path.exists(CACHE_FILE):
-        return {}
+        return {}, []
     with open(CACHE_FILE, "r") as f:
-        return {repo["title"]: repo for repo in json.load(f)}
+        data = json.load(f)
+        all_descriptions = [repo.get("description", "") for repo in data if repo.get("description")]
+        return {repo["title"]: repo for repo in data}, all_descriptions
 
 def save_cache(data_dict):
     with open(CACHE_FILE, "w") as f:
@@ -174,7 +180,7 @@ def save_cache(data_dict):
 
 @app.route('/repos')
 def repos_complete():
-    contributed_repos = load_cache()
+    contributed_repos, all_descriptions = load_cache()
 
     starred = fetch_starred_repos()
     owned = fetch_owned_public_repos()
@@ -208,16 +214,79 @@ def repos_complete():
             # LLM part to chatgpt to get a description and skills set up from the github link.
             # <TODO>
 
+            client = OpenAI()
+
+            response = client.responses.create(
+                model="gpt-4.1",
+                tools=[{"type": "web_search_preview"}],
+                input=f"""
+                Here are prior descriptions. Vary the next one so it sounds more natural.
+                {all_descriptions}
+
+                Follow this url {url} and provide a 1 to 2 sentence decription of the project as if 
+                it'll go on the projects for my personal website for a student who has a masters in data science. 
+                If it's difficult to provide a description then just explain what it contains. Don't say 'challenging 
+                to provide a detailed description of the project' since this will be shown on my personal website.
+
+                Provide no other output
+                """
+            )
+
+            all_descriptions.append(response.output_text)
+
+            def get_github_languages(repo_url):
+                # Example: repo_url = 'https://github.com/hjang8659/E-DataSync-Distributed-E-Commerce-Inventory-Management'
+                owner_repo = '/'.join(repo_url.rstrip('/').split('/')[-2:])
+                api_url = f'https://api.github.com/repos/{owner_repo}/languages'
+                resp = requests.get(api_url)
+                if resp.status_code == 200:
+                    return list(resp.json().keys())  # Just the language names
+                return []
+
+            # Usage
+            langs = get_github_languages(url)
+            print(langs)
+
+            skills_response = client.responses.create(
+                model="gpt-4.1",
+                tools=[{"type": "web_search_preview"}],
+                input=f"""
+            Read the content at this URL: {url}
+
+            and project description from {response.output_text}
+
+            also the languages from {langs}
+
+            Identify only the technologies, libraries, and tools that are used in the code or documentation of the project at this URL.
+            Return a JSON list of relevant skills as someone would select skills for the project on linkedin. 
+            If you cannot identify any technologies, libraries, or tools, return an empty list: [] but ideally we would want around 1 to 6 skills.
+            Look into the code of the url and project to find the relavent skills if you can't find any within the code. 
+            For big projects there should be at least 1. These skills will be listed under my project description for my website.
+
+            Return only a JSON list (for example: ["Python", "Flask", "React"]), with no other output, text, or code blocks.
+            This is so that the skills can be found using match = re.search(r"\[.*?\]", skills_response.output_text, re.DOTALL)
+            """
+            )
+            print(skills_response.output_text)
+            # Safely parse the output
+            try:
+                match = re.search(r"\[.*?\]", skills_response.output_text, re.DOTALL)
+                skills = json.loads(match.group(0)) if match else []
+                print(skills)
+            except Exception as e:
+                print(f"Failed to parse skills JSON: {e}")
+                skills = []
+
             contributed_repos[full_name] = {
                 "title": name,
-                "description": "",
+                "description": response.output_text,
                 "github": url,
                 "demoType": None,
                 "demoContent": None,
                 "startDate": first_commit,
                 "endDate": pushed_at,
                 "ongoing": False,
-                "skills": []
+                "skills": skills
             }
         else:
             print(f"Skipped (not a contributor): {full_name}")
