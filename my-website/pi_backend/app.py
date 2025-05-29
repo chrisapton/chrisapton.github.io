@@ -1,19 +1,12 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from flask import Flask, jsonify, request
 from flask_apscheduler import APScheduler
-from dateutil.parser import isoparse
-from dateutil.relativedelta import relativedelta
 from flask_cors import CORS
-from datetime import datetime, timezone
-from dotenv import load_dotenv
-from openai import OpenAI
 from github_repo_updater import update_repos_cache, load_cache
 import os
-import requests
-import json
-import re
 import time
-
-load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
