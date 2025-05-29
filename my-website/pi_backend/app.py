@@ -1,4 +1,6 @@
 from flask import Flask, jsonify, request
+from flask_apscheduler import APScheduler
+from dateutil.parser import isoparse
 from flask_cors import CORS
 from datetime import datetime
 from dotenv import load_dotenv
@@ -7,7 +9,7 @@ import os
 import requests
 import json
 import re
-
+import time
 
 load_dotenv()
 
@@ -16,114 +18,31 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 USERNAME = "chrisapton"
 HEADERS = {"Authorization": f"Bearer {GITHUB_TOKEN}"}
 CACHE_FILE = "contributed_repos.json"
+LAST_RUN_FILE = "last_repos_run.txt"
 
 app = Flask(__name__)
 CORS(app)
-# Sample project data
-projects_data = sorted([
-    {
-        "title": "Personal Website",
-        "description": "A personal website to showcase my work. The frontend is in React and the backend is using Flask hosted on Heroku.",
-        "github": "https://github.com/chrisapton/chrisapton.github.io",
-        "demoType": "link",  # Can be "link", "image", "code", or "script"
-        "demoContent": "https://chrisapton.github.io/",  # URL for the demo link
-        "startDate": "2025-01-01",
-        "endDate": "2025-01-10",
-        "ongoing": False,
-        "skills": ["React", "HTML", "CSS", "JavaScript", "Flask"]
-    },
-    {
-        "title": "Round Robin Website",
-        "description": "Designed and edited a responsive website for a local retail store to improve user experience and showcase products. Performed updates as requested from the owner, including content changes, UI refinements, and SEO optimizations to enhance online visibility. Changed where the website was hosted, reducing costs by 100%.",
-        "github": "https://github.com/chrisapton/round_robin",
-        "demoType": "link",  
-        "demoContent": "https://roundrobinstore.com/", 
-        "startDate": "2024-10-01",
-        "endDate": "2024-10-30", 
-        "ongoing": False,
-        "skills": ["HTML", "CSS", "JavaScript"]
-    },
-    {
-        "title": "CalHacks 10.0: KnowBotics",
-        "description": "Developed a homework helper bot powered by a Large Language Model (LLM) designed to provide personalized help by analyzing lecture slides, PDFs, and homework assignments, offering customized support for students’ academic tasks.",
-        "github": "https://github.com/chrisapton/CalHackss",
-        "demoType": None,  
-        "demoContent": None,
-        "startDate": "2023-10-01",
-        "endDate": "2023-10-31", 
-        "ongoing": False,
-        "skills": ["Python", "OpenAI API", "LlamaIndex", "Reflex", "Natural Language Processing"]
-    },
-    {
-        "title": "Heart Disease Prediction",
-        "description": "Led the development of an XGBoost model with tuned hyperparameters, leveraging Cross-Validation to predict heart disease. Preprocessed data to improve model performance: Removed outliers and feature engineering. Developed in R. Optimized the model using Randomized Search for hyperparameter tuning achieving a 90% validation accuracy.",
-        "github": "https://github.com/chrisapton/Heart-Disease-Prediction",
-        "demoType": None,
-        "demoContent": None,  
-        "startDate": "2022-06-01",
-        "endDate": "2022-08-01",
-        "ongoing": False,
-        "skills": ["R", "Machine Learning", "XGBoost"]
-    },
-    {
-        "title": "Casca Project",
-        "description": "This project processes financial documents (e.g., bank statements) to evaluate loan eligibility using OpenAI's GPT-4 model (gpt-4o). The workflow includes converting PDF files into images, organizing them into folders, and analyzing the data using GPT-4 along with a custom text prompt.",
-        "github": "https://github.com/chrisapton/CascaProject",
-        "demoType": None,
-        "demoContent": None,  
-        "startDate": "2025-01-13",
-        "endDate": "2025-01-14",
-        "ongoing": False,
-        "skills": ["Python", "OpenAI GPT Models", "Natural Language Processing (NLP)", "pdf2image", "OpenCV", "Prompt Engineering", "Pandas", "Git", "Financial Analysis"]
-    },
-    {
-    "title": "SetupForge",
-    "description": "SetupForge is a Windows desktop application built with C++ and wxWidgets that automates software installation and system configuration tasks. It allows users to create, edit, and execute custom installation scripts that can run executable files, move files, create directories, manage environment variables, edit the registry, and map network drives. The application features a user-friendly graphical interface for seamless configuration.",
-    "github": "https://github.com/JoeCool16/SetupForge",
-    "demoType": "link",
-    "demoContent": "https://github.com/JoeCool16/SetupForge/releases/download/v1.0/SetupForge.exe",  
-    "startDate": "2025-01-10",
-    "endDate": "2025-01-21",
-    "ongoing": False,
-    "skills": [
-        "C++", 
-        "wxWidgets", 
-        "Windows API", 
-        "Batch Scripting", 
-        "File System Management", 
-        "Registry Editing", 
-        "Environment Variable Management", 
-        "Git", 
-        "Software Deployment"
-    ]
-}
-], key=lambda project: (
-    not project["ongoing"],  # Ongoing projects first
-    project["endDate"] if project["endDate"] else "9999-12-31"  # Sort by endDate
-), reverse=True)  # Newest projects first
 
-def format_date(date_str):
-    if not date_str:  # Handle None dates
-        return None
-    date_obj = datetime.strptime(date_str, "%Y-%m-%d") 
-    return date_obj.strftime("%Y-%m-%dT00:00:00Z") 
+# Weekly scheduler to check for updates on github
+def get_last_run():
+    if os.path.exists(LAST_RUN_FILE):
+        with open(LAST_RUN_FILE) as f:
+            return float(f.read().strip())
+    return 0
 
-for project in projects_data:
-    project["startDate"] = format_date(project["startDate"])  
-    project["endDate"] = format_date(project["endDate"])  
+def set_last_run(ts=None):
+    ts = ts or time.time()
+    with open(LAST_RUN_FILE, "w") as f:
+        f.write(str(ts))
 
-
-
-@app.route("/")
-def home():
-    return "Backend is running!"
-
-# Route to reverse input (example route you had)
-@app.route("/run-python-code", methods=["POST"])
-def run_python_code():
-    input_data = request.json.get("input")
-    result = {"output": input_data[::-1]}  # Reverse the input string
-    return jsonify(result)
+def weekly_repos_update():
+    # Only run if it's been > 1 week since last run
+    if time.time() - get_last_run() > 7 * 24 * 60 * 60:
+        print("Running scheduled weekly repos update...")
+        update_repos_cache()
+        set_last_run()
+    else:
+        print("Weekly repo update: Not needed yet.")
 
 def fetch_starred_repos():
     url = f"https://api.github.com/users/{USERNAME}/starred?per_page=100"
@@ -161,8 +80,8 @@ def get_commit_dates(owner, repo):
     commits = response.json()
     if not commits:
         return None, None
-    latest = commits[0]["commit"]["author"]["date"]
-    first = commits[-1]["commit"]["author"]["date"]
+    latest = commits[0]["commit"]["author"]["date"].split("T")[0]
+    first = commits[-1]["commit"]["author"]["date"].split("T")[0]
     return first, latest
 
 def load_cache():
@@ -177,15 +96,11 @@ def save_cache(data_dict):
     with open(CACHE_FILE, "w") as f:
         json.dump(list(data_dict.values()), f, indent=2)
 
-
-@app.route('/repos')
-def repos_complete():
+def update_repos_cache():
     contributed_repos, all_descriptions = load_cache()
-
     starred = fetch_starred_repos()
     owned = fetch_owned_public_repos()
     all_repos = starred + owned
-
     seen = set()
 
     for repo in all_repos:
@@ -201,19 +116,40 @@ def repos_complete():
 
         # Skip if already cached
         if name in contributed_repos:
+            # Check for if there's an updated last commit
+            first_commit, last_commit = get_commit_dates(owner, name)
+
+            if not first_commit:
+                first_commit = pushed_at.split("T")[0]
+            if not last_commit:
+                last_commit = pushed_at.split("T")[0]
+
+            if isoparse(last_commit) > isoparse(contributed_repos[name]["endDate"]):
+                print("Commit update detected at:", full_name)
+                contributed_repos[full_name] = {
+                    "title": contributed_repos[name]["title"],
+                    "description": contributed_repos[name]["description"],
+                    "github": contributed_repos[name]["github"],
+                    "demoType": None,
+                    "demoContent": None,
+                    "startDate": contributed_repos[name]["startDate"],
+                    "endDate": last_commit,
+                    "ongoing": False,
+                    "skills": contributed_repos[name]["skills"]
+                }
+                
+
             continue
 
         if is_user_a_contributor(owner, name):
             first_commit, last_commit = get_commit_dates(owner, name)
 
             if not first_commit:
-                first_commit = pushed_at
+                first_commit = pushed_at.split("T")[0]
             if not last_commit:
-                last_commit = pushed_at
+                last_commit = pushed_at.split("T")[0]
             
             # LLM part to chatgpt to get a description and skills set up from the github link.
-            # <TODO>
-
             client = OpenAI()
 
             response = client.responses.create(
@@ -235,18 +171,14 @@ def repos_complete():
             all_descriptions.append(response.output_text)
 
             def get_github_languages(repo_url):
-                # Example: repo_url = 'https://github.com/hjang8659/E-DataSync-Distributed-E-Commerce-Inventory-Management'
                 owner_repo = '/'.join(repo_url.rstrip('/').split('/')[-2:])
                 api_url = f'https://api.github.com/repos/{owner_repo}/languages'
                 resp = requests.get(api_url)
                 if resp.status_code == 200:
-                    return list(resp.json().keys())  # Just the language names
+                    return list(resp.json().keys())
                 return []
 
-            # Usage
             langs = get_github_languages(url)
-            print(langs)
-
             skills_response = client.responses.create(
                 model="gpt-4.1",
                 tools=[{"type": "web_search_preview"}],
@@ -267,8 +199,7 @@ def repos_complete():
             This is so that the skills can be found using match = re.search(r"\[.*?\]", skills_response.output_text, re.DOTALL)
             """
             )
-            print(skills_response.output_text)
-            # Safely parse the output
+
             try:
                 match = re.search(r"\[.*?\]", skills_response.output_text, re.DOTALL)
                 skills = json.loads(match.group(0)) if match else []
@@ -279,12 +210,12 @@ def repos_complete():
 
             contributed_repos[full_name] = {
                 "title": name,
-                "description": response.output_text,
+                "description": response.output_text.strip(),
                 "github": url,
                 "demoType": None,
                 "demoContent": None,
                 "startDate": first_commit,
-                "endDate": pushed_at,
+                "endDate": last_commit,
                 "ongoing": False,
                 "skills": skills
             }
@@ -294,19 +225,33 @@ def repos_complete():
     # Save updated cache
     save_cache(contributed_repos)
 
-    # Return sorted list
+# Setup scheduler
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+scheduler.add_job(id='WeeklyReposUpdate', func=weekly_repos_update, trigger='interval', hours=1)  # Checks every hour
+
+
+@app.route("/")
+def home():
+    return "Backend is running!"
+
+# Route to reverse input (example route you had)
+@app.route("/run-python-code", methods=["POST"])
+def run_python_code():
+    input_data = request.json.get("input")
+    result = {"output": input_data[::-1]}  # Reverse the input string
+    return jsonify(result)
+
+@app.route('/repos')
+def repos_cached():
+    contributed_repos, _ = load_cache()
     sorted_list = sorted(
         contributed_repos.values(),
         key=lambda x: x["endDate"] or "",
         reverse=True
     )
-
     return jsonify(sorted_list)
-
-# New route to serve project data
-@app.route("/projects", methods=["GET"])
-def get_projects():
-    return jsonify(projects_data)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5050))
