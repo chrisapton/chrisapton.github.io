@@ -238,7 +238,6 @@ scheduler.init_app(app)
 scheduler.start()
 scheduler.add_job(id='WeeklyReposUpdate', func=weekly_repos_update, trigger='interval', hours=1)  # Checks every hour
 
-
 @app.route("/")
 def home():
     return "Backend is running!"
