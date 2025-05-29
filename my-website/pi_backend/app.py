@@ -1,8 +1,9 @@
 from flask import Flask, jsonify, request
 from flask_apscheduler import APScheduler
 from dateutil.parser import isoparse
+from dateutil.relativedelta import relativedelta
 from flask_cors import CORS
-from datetime import datetime
+from datetime import datetime, timezone
 from dotenv import load_dotenv
 from openai import OpenAI
 import os
@@ -126,20 +127,25 @@ def update_repos_cache():
 
             if isoparse(last_commit) > isoparse(contributed_repos[name]["endDate"]):
                 print("Commit update detected at:", full_name)
-                contributed_repos[full_name] = {
-                    "title": contributed_repos[name]["title"],
-                    "description": contributed_repos[name]["description"],
-                    "github": contributed_repos[name]["github"],
-                    "demoType": None,
-                    "demoContent": None,
-                    "startDate": contributed_repos[name]["startDate"],
-                    "endDate": last_commit,
-                    "ongoing": False,
-                    "skills": contributed_repos[name]["skills"]
-                }
-                
 
-            continue
+                if isoparse(last_commit) - isoparse(contributed_repos[name]["updatedDate"]) > relativedelta(months=6):
+                    print("Full update for:", full_name)
+                else: 
+                    contributed_repos[full_name] = {
+                        "title": contributed_repos[name]["title"],
+                        "description": contributed_repos[name]["description"],
+                        "github": contributed_repos[name]["github"],
+                        "demoType": None,
+                        "demoContent": None,
+                        "startDate": contributed_repos[name]["startDate"],
+                        "endDate": last_commit,
+                        "ongoing": False,
+                        "skills": contributed_repos[name]["skills"],
+                        "updatedDate": contributed_repos[name]["updatedDate"]
+                    }
+                    continue
+            else:
+                continue
 
         if is_user_a_contributor(owner, name):
             first_commit, last_commit = get_commit_dates(owner, name)
@@ -217,7 +223,8 @@ def update_repos_cache():
                 "startDate": first_commit,
                 "endDate": last_commit,
                 "ongoing": False,
-                "skills": skills
+                "skills": skills,
+                "updatedDate": datetime.now(timezone.utc).strftime("%Y-%m-%d")
             }
         else:
             print(f"Skipped (not a contributor): {full_name}")
@@ -245,6 +252,7 @@ def run_python_code():
 
 @app.route('/repos')
 def repos_cached():
+    update_repos_cache()
     contributed_repos, _ = load_cache()
     sorted_list = sorted(
         contributed_repos.values(),
