@@ -135,7 +135,8 @@ def update_repos_cache():
                 Follow this url {url} and provide a 1 to 2 sentence decription of the project as if 
                 it'll go on the projects for my personal website for a student who has a masters in data science. 
                 If it's difficult to provide a description then just explain what it contains. Don't say 'challenging 
-                to provide a detailed description of the project' since this will be shown on my personal website.
+                to provide a detailed description of the project' since this will be shown on my personal website. The github links will be provided
+                so you don't need to include it in your description.
 
                 Provide no other output
                 """
