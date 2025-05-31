@@ -54,8 +54,18 @@ def run_python_code():
 @app.route('/repos')
 def repos_cached():
     # debugging 
-    update_repos_cache()
+    contributed_repos, _ = load_cache()
+    sorted_list = sorted(
+        contributed_repos.values(),
+        key=lambda x: x["endDate"] or "",
+        reverse=True
+    )
+    return jsonify(sorted_list)
 
+@app.route('/repos/forced')
+def repos_cached():
+    weekly_repos_update()
+    # debugging 
     contributed_repos, _ = load_cache()
     sorted_list = sorted(
         contributed_repos.values(),
