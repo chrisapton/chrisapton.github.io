@@ -167,7 +167,7 @@ def update_repos_cache():
             Return a JSON list of relevant skills as someone would select skills for the project on linkedin. 
             If you cannot identify any technologies, libraries, or tools, return an empty list: [] but ideally we would want around 1 to 6 skills.
             Look into the code of the url and project to find the relavent skills if you can't find any within the code. 
-            For big projects there should be at least 1. These skills will be listed under my project description for my website.
+            For almost all projects there should be at least 1. Some skills will be listed under my project description for my website.
 
             Return only a JSON list (for example: ["Python", "Flask", "React"]), with no other output, text, or code blocks.
             This is so that the skills can be found using match = re.search(r"\[.*?\]", skills_response.output_text, re.DOTALL)
