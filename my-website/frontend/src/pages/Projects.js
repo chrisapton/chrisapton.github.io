@@ -5,7 +5,7 @@ const Projects = () => {
 
   // Fetch projects from the backend
   useEffect(() => {
-    fetch("https://backend-personal-website-ee5a10ef78c9.herokuapp.com/projects")
+    fetch("https://chrisbackend.roundrobinstore.com/repos")
       .then((response) => response.json())
       .then((data) => setProjects(data))
       .catch((error) => console.error("Error fetching projects:", error));
