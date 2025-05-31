@@ -1,7 +1,7 @@
 [
   {
     "title": "Music-KG-Project",
-    "description": "The Music Sampling Knowledge Graph project involves constructing a knowledge graph that maps relationships between various music samples, artists, and tracks. It includes tools for data extraction, transformation, and visualization, facilitating in-depth analysis of music sampling patterns.",
+    "description": "The Music-KG-Project is a comprehensive initiative focused on constructing a knowledge graph that maps relationships between various musical elements, such as artists, albums, and tracks. It integrates data from multiple sources to provide a structured representation of music metadata, facilitating advanced data analysis and exploration.",
     "github": "https://github.com/chrisapton/Music-KG-Project",
     "demoType": null,
     "demoContent": null,
@@ -14,11 +14,11 @@
       "Docker",
       "Streamlit"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "CascaProject",
-    "description": "The Casca Project automates the evaluation of loan eligibility by converting financial documents into images and analyzing them using OpenAI's GPT-4 model. This process streamlines financial assessments, enhancing efficiency and accuracy.",
+    "description": "The Casca Project is designed to assess loan eligibility by analyzing financial documents, such as bank statements, using OpenAI's GPT-4 model. It converts PDFs into images, organizes them systematically, and employs a tailored prompt to extract and evaluate relevant financial data.",
     "github": "https://github.com/chrisapton/CascaProject",
     "demoType": null,
     "demoContent": null,
@@ -28,14 +28,15 @@
     "skills": [
       "Python",
       "OpenAI GPT-4",
-      "PDF to Image Conversion",
-      "Financial Document Analysis"
+      "PDF Processing",
+      "Image Processing",
+      "Jupyter Notebook"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "SetupForge",
-    "description": "SetupForge is a Windows desktop application developed in C++ using wxWidgets, designed to automate software installation and system configuration tasks. It enables users to create, edit, and execute custom installation scripts for operations like running executables, managing files and directories, setting environment variables, editing the registry, and mapping network drives.",
+    "description": "SetupForge is a Windows desktop application developed in C++ using wxWidgets, designed to automate software installations and system configurations. It enables users to create and execute custom scripts for tasks like running executables, managing files and directories, setting environment variables, editing the registry, and mapping network drives.",
     "github": "https://github.com/JoeCool16/SetupForge",
     "demoType": null,
     "demoContent": null,
@@ -47,14 +48,14 @@
       "wxWidgets",
       "Windows API",
       "Shell Scripting",
-      "Windows Registry",
+      "Registry Editing",
       "Network Drive Mapping"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "cs566-project",
-    "description": "OneNet is a channel-wise 1D convolutional U-Net designed for efficient and accurate segmentation of 1D data sequences. The project includes comprehensive tools for training, evaluation, and visualization, facilitating in-depth analysis and application of the model.",
+    "description": "The SegOne project focuses on developing a channel-wise 1D convolutional U-Net, known as OneNet, designed for efficient and accurate segmentation of one-dimensional data. This architecture is particularly suited for applications requiring precise analysis of sequential data.",
     "github": "https://github.com/byuns-usc/cs566-project",
     "demoType": null,
     "demoContent": null,
@@ -68,11 +69,11 @@
       "Matplotlib",
       "Scikit-learn"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "E-DataSync-Distributed-E-Commerce-Inventory-Management",
-    "description": "E-DataSync is a distributed e-commerce inventory management system designed to efficiently handle inventory data across multiple locations. The project encompasses backend database management, a user-friendly web interface, and various application pages to streamline inventory tracking and operations.",
+    "description": "E-DataSync is a distributed e-commerce inventory management system that integrates backend database management with a user-friendly web interface, facilitating efficient inventory tracking and management.",
     "github": "https://github.com/hjang8659/E-DataSync-Distributed-E-Commerce-Inventory-Management",
     "demoType": null,
     "demoContent": null,
@@ -84,14 +85,13 @@
       "Streamlit",
       "SQLite",
       "Pandas",
-      "NumPy",
-      "Matplotlib"
+      "NumPy"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "pe-consensus-scoring",
-    "description": "The \"PE Consensus and Scoring\" project implements consensus and scoring algorithms for Public Editor, deployed on AWS Lambda. It processes messages from an SQS queue to handle tasks such as calculating consensus, publishing articles, and unpublishing articles.",
+    "description": "The PE Consensus Scoring project implements algorithms for consensus evaluation and article publishing, deployed on AWS Lambda. It processes messages from an SQS queue to perform tasks such as calculating consensus scores and managing article publication statuses.",
     "github": "https://github.com/Goodly/pe-consensus-scoring",
     "demoType": null,
     "demoContent": null,
@@ -102,14 +102,13 @@
       "Python",
       "AWS Lambda",
       "Amazon SQS",
-      "AWS CloudFormation",
-      "Shell Scripting"
+      "Shell"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "software-dev",
-    "description": "The software-dev repository contains prototype files developed by the Public Editor Software Development Team. It includes various components such as web scrapers, Chrome extensions, visualization tools, and mobile applications, all aimed at enhancing the Public Editor platform.",
+    "description": "The software-dev repository contains prototype files developed by the Public Editor Software Development Team. It includes various components such as web scrapers, Java servers, Chrome extensions, visualizations, and mobile applications, reflecting a diverse range of development efforts.",
     "github": "https://github.com/Goodly/software-dev",
     "demoType": null,
     "demoContent": null,
@@ -118,16 +117,17 @@
     "ongoing": false,
     "skills": [
       "JavaScript",
-      "Python",
       "Java",
-      "Flutter",
-      "Chrome Extensions"
+      "Python",
+      "Dart",
+      "Swift",
+      "Kotlin"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "2022-wi-stats21",
-    "description": "The repository contains instructional materials for an introductory statistics course, including class notes, assignments, and resources on topics such as data types, Git basics, and Jupyter Notebook usage.",
+    "description": "The repository contains instructional materials for a statistics course, including Jupyter notebooks, PDFs, and R Markdown files covering topics like Git basics, Jupyter Notebook usage, and fundamental data types.",
     "github": "https://github.com/chrisapton/2022-wi-stats21",
     "demoType": null,
     "demoContent": null,
@@ -136,44 +136,48 @@
     "ongoing": false,
     "skills": [
       "Python",
+      "R",
       "Jupyter Notebook",
       "Git",
       "TeX"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "CalHackss",
-    "description": "The CalHackss repository contains a portion of the code developed during the CalHacks hackathon. Due to GitHub's storage limitations, the full codebase isn't uploaded.",
+    "description": "The CalHackss repository contains partial code from a project developed during the CalHacks hackathon. Due to GitHub's 50MB storage limit, the complete codebase isn't uploaded.",
     "github": "https://github.com/chrisapton/CalHackss",
     "demoType": null,
     "demoContent": null,
     "startDate": "2022-01-05",
     "endDate": "2024-08-31",
     "ongoing": false,
-    "skills": [],
-    "updatedDate": "2025-05-29"
+    "skills": [
+      "Python",
+      "Jupyter Notebook",
+      "HTML"
+    ],
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "chrisapton.github.io",
-    "description": "The repository at [chrisapton.github.io](https://github.com/chrisapton/chrisapton.github.io) contains the source code for my personal website, including HTML, CSS, JavaScript files, and assets like images and PDFs.",
+    "description": "This repository contains the source code and assets for my personal website, built using GitHub Pages.",
     "github": "https://github.com/chrisapton/chrisapton.github.io",
     "demoType": null,
     "demoContent": null,
     "startDate": "2020-08-31",
-    "endDate": "2025-05-29",
+    "endDate": "2025-05-31",
     "ongoing": false,
     "skills": [
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "GitHub Pages"
+      "React",
+      "GitHub Pages",
+      "Shell Scripting"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "Coding_Assessment_2024",
-    "description": "The \"Applicant Compatibility Scoring System\" is a Python script that evaluates candidates for a technical team by calculating compatibility scores based on attributes such as intelligence, strength, endurance, and tolerance for spicy food. It utilizes NumPy and pandas for data processing and requires an input JSON file named `input.json` to operate.",
+    "description": "The Applicant Compatibility Scoring System is a Python script that evaluates candidates for a technical team by calculating compatibility scores based on attributes like intelligence, strength, endurance, and spicy food tolerance. It utilizes NumPy and pandas for data processing and requires an input JSON file named `input.json` to operate.",
     "github": "https://github.com/chrisapton/Coding_Assessment_2024",
     "demoType": null,
     "demoContent": null,
@@ -185,11 +189,11 @@
       "NumPy",
       "pandas"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "Heart-Disease-Prediction",
-    "description": "The Heart Disease Prediction project involves analyzing heart disease datasets using machine learning techniques to predict the likelihood of heart disease in patients. The repository includes R scripts, datasets, and a comprehensive report detailing the methodology and findings.",
+    "description": "The Heart Disease Prediction project involves analyzing heart disease datasets using R to develop predictive models. It includes R Markdown files, datasets, and a PDF report detailing the analysis and findings.",
     "github": "https://github.com/chrisapton/Heart-Disease-Prediction",
     "demoType": null,
     "demoContent": null,
@@ -198,15 +202,13 @@
     "ongoing": false,
     "skills": [
       "R",
-      "Machine Learning",
-      "Data Analysis",
-      "Statistical Modeling"
+      "R Markdown"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "MITHacks",
-    "description": "Enlighten Me is a web application featuring a Python backend with Flask and a frontend built using HTML, CSS, JavaScript, and React. It presents users with a \"Change My Mind\" image displaying a controversial topic, prompting a 5-minute debate session. After each session, the site refreshes with a new topic and clears the chat, facilitating continuous, topic-focused discussions.",
+    "description": "Enlighten Me is a web application that facilitates real-time debates on controversial topics. Built with a Python Flask backend and a frontend utilizing HTML, CSS, JavaScript, and React, it presents users with a \"Change My Mind\" image featuring a contentious statement. Participants engage in a five-minute discussion before the topic refreshes, clearing the chat for a new conversation.",
     "github": "https://github.com/chrisapton/MITHacks",
     "demoType": null,
     "demoContent": null,
@@ -221,11 +223,11 @@
       "CSS",
       "JavaScript"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "projects",
-    "description": "The GitHub repository at [chrisapton/projects](https://github.com/chrisapton/projects) currently contains a `README.md` file and a `hello.txt` file, but lacks detailed descriptions or content. It appears to be a placeholder or an initial setup for future projects.",
+    "description": "The GitHub repository at [https://github.com/chrisapton/projects](https://github.com/chrisapton/projects) currently contains a `README.md` file and a `hello.txt` file. However, it lacks a detailed description, website link, or specified topics, making it challenging to provide a comprehensive overview of its contents.",
     "github": "https://github.com/chrisapton/projects",
     "demoType": null,
     "demoContent": null,
@@ -233,11 +235,11 @@
     "endDate": "2022-01-06",
     "ongoing": false,
     "skills": [],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "round_robin",
-    "description": "The \"Encore Round Robin Website\" repository contains the source code for the website [roundrobinstore.com](https://roundrobinstore.com), including HTML, CSS, and image files. It serves as the platform for providing updates and features related to the Encore Round Robin store.",
+    "description": "The Round Robin repository contains the source code and assets for the Encore Round Robin website, which is accessible at [roundrobinstore.com](https://roundrobinstore.com). The repository includes HTML files for various pages such as `index.html`, `contact.html`, and `gallery.html`, along with a `style.css` file for styling and an `images` directory for visual content. Additionally, it features a `CNAME` file, indicating a custom domain setup, and a `robots.txt` file for managing search engine indexing.",
     "github": "https://github.com/chrisapton/round_robin",
     "demoType": null,
     "demoContent": null,
@@ -248,11 +250,11 @@
       "HTML",
       "CSS"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   },
   {
     "title": "STATS-199-Research-SPR-2023",
-    "description": "The STATS-199-Research-SPR-2023 repository contains materials from a research project conducted during the Spring 2023 semester. It includes Jupyter notebooks, a final project report, and code files related to statistical analysis and modeling.",
+    "description": "This repository contains materials from a research project conducted during the Spring 2023 semester of STATS 199. It includes Jupyter notebooks, a final project report, and code documentation.",
     "github": "https://github.com/chrisapton/STATS-199-Research-SPR-2023",
     "demoType": null,
     "demoContent": null,
@@ -262,11 +264,10 @@
     "skills": [
       "Python",
       "Jupyter Notebook",
-      "pandas",
-      "NumPy",
-      "scikit-learn",
-      "ARIMA"
+      "ARIMAX",
+      "Data Analysis",
+      "Statistical Modeling"
     ],
-    "updatedDate": "2025-05-29"
+    "updatedDate": "2025-05-31"
   }
 ]
