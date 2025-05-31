@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactMarkdown from 'react-markdown';
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -45,8 +46,11 @@ const Projects = () => {
                   : "No End Date"}
               </div>
             </div>
-            <p style={styles.description}>{project.description}</p>
-
+            <ReactMarkdown components={{
+              p: props => <p style={styles.description} {...props} />
+            }}>
+              {project.description}
+            </ReactMarkdown>
             {/* Render the demo dynamically based on demoType */}
             {project.demoType === "link" && (
               <a
