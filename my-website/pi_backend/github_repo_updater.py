@@ -108,7 +108,7 @@ def update_repos_cache():
                         "endDate": last_commit,
                         "ongoing": False,
                         "skills": contributed_repos[name]["skills"],
-                        "updatedDate": contributed_repos[name]["updatedDate"]
+                        "updatedDate": last_commit
                     }
                     continue
             else:
