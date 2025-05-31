@@ -1,6 +1,6 @@
 from dateutil.parser import isoparse
 from dateutil.relativedelta import relativedelta
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from openai import OpenAI
 import os
 import requests
@@ -95,7 +95,7 @@ def update_repos_cache():
             if isoparse(last_commit) > isoparse(contributed_repos[name]["endDate"]):
                 print("Commit update detected at:", full_name)
 
-                if isoparse(last_commit) - isoparse(contributed_repos[name]["updatedDate"]) > relativedelta(months=6):
+                if isoparse(last_commit) - isoparse(contributed_repos[name]["updatedDate"]) > timedelta(days=180):
                     print("Full update for:", full_name)
                 else: 
                     contributed_repos[full_name] = {
