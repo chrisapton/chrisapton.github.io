@@ -63,7 +63,7 @@ def repos_cached():
     return jsonify(sorted_list)
 
 @app.route('/repos/forced')
-def repos_cached():
+def repos_forced():
     weekly_repos_update()
     # debugging 
     contributed_repos, _ = load_cache()
