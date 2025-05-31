@@ -64,7 +64,7 @@ def repos_cached():
 
 @app.route('/repos/forced')
 def repos_forced():
-    weekly_repos_update()
+    update_repos_cache()
     # debugging 
     contributed_repos, _ = load_cache()
     sorted_list = sorted(
