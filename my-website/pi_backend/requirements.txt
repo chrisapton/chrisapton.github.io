@@ -4,3 +4,5 @@ flask-cors
 python-dotenv
 openai
 flask_apscheduler
+selenium
+lxml
