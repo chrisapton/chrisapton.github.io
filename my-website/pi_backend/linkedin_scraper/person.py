@@ -3,8 +3,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
 from .objects import Experience, Education, Scraper, Interest, Accomplishment, Contact
+
 import os
 from linkedin_scraper import selectors
 
@@ -105,6 +106,14 @@ class Person(Scraper):
             return "#OPEN_TO_WORK" in self.driver.find_element(By.CLASS_NAME,"pv-top-card-profile-picture").find_element(By.TAG_NAME,"img").get_attribute("title")
         except:
             return False
+        
+    def focus(self):
+        try:
+            alert = self.driver.switch_to.alert
+            alert.accept()
+        except NoAlertPresentException:
+            # No alert to accept, just continue
+            pass
 
     def get_experiences(self):
         url = os.path.join(self.linkedin_url, "details/experience")
@@ -114,13 +123,16 @@ class Person(Scraper):
         self.scroll_to_half()
         self.scroll_to_bottom()
         main_list = self.wait_for_element_to_load(name="pvs-list__container", base=main)
+
+        with open("linkedin_experience.html", "w", encoding="utf-8") as f:
+            f.write(self.driver.page_source)
+
         for position in main_list.find_elements(By.CLASS_NAME, "pvs-list__paged-list-item"):
             position = position.find_element(By.CSS_SELECTOR, "div[data-view-name='profile-component-entity']")
-            
-            # Fix: Handle case where more than 2 elements are returned
             elements = position.find_elements(By.XPATH, "*")
+            # Not enough data
             if len(elements) < 2:
-                continue  # Skip if we don't have enough elements
+                continue
                 
             company_logo_elem = elements[0]
             position_details = elements[1]
@@ -148,6 +160,9 @@ class Person(Scraper):
                 company = outer_positions[1].find_element(By.TAG_NAME,"span").text
                 work_times = outer_positions[2].find_element(By.TAG_NAME,"span").text
                 location = outer_positions[3].find_element(By.TAG_NAME,"span").text
+
+            # case where it doesn't work with multiple positions in the same compoany
+            # potential fix to separate jobs into separate instances
             elif len(outer_positions) == 3:
                 if "·" in outer_positions[2].text:
                     position_title = outer_positions[0].find_element(By.TAG_NAME,"span").text
@@ -155,10 +170,15 @@ class Person(Scraper):
                     work_times = outer_positions[2].find_element(By.TAG_NAME,"span").text
                     location = ""
                 else:
+                    # occurs here, the times aren't the correct format, needs cleaning
                     position_title = ""
                     company = outer_positions[0].find_element(By.TAG_NAME,"span").text
                     work_times = outer_positions[1].find_element(By.TAG_NAME,"span").text
                     location = outer_positions[2].find_element(By.TAG_NAME,"span").text
+
+                    print(company)
+                    print(work_times)
+                    print(location)
             else:
                 position_title = ""
                 company = outer_positions[0].find_element(By.TAG_NAME,"span").text if outer_positions else ""
@@ -186,6 +206,10 @@ class Person(Scraper):
                     inner_positions = []
             else:
                 inner_positions = []
+
+            for pos in inner_positions:
+                print(pos)
+                print(pos.text)
             
             if len(inner_positions) > 1:
                 descriptions = inner_positions
@@ -364,28 +388,28 @@ class Person(Scraper):
         driver.get(self.linkedin_url)
 
         # get interest
-        # try:
+        try:
 
-        #     _ = WebDriverWait(driver, self.__WAIT_FOR_ELEMENT_TIMEOUT).until(
-        #         EC.presence_of_element_located(
-        #             (
-        #                 By.XPATH,
-        #                 "//*[@class='pv-profile-section pv-interests-section artdeco-container-card artdeco-card ember-view']",
-        #             )
-        #         )
-        #     )
-        #     interestContainer = driver.find_element(By.XPATH,
-        #         "//*[@class='pv-profile-section pv-interests-section artdeco-container-card artdeco-card ember-view']"
-        #     )
-        #     for interestElement in interestContainer.find_elements(By.XPATH,
-        #         "//*[@class='pv-interest-entity pv-profile-section__card-item ember-view']"
-        #     ):
-        #         interest = Interest(
-        #             interestElement.find_element(By.TAG_NAME, "h3").text.strip()
-        #         )
-        #         self.add_interest(interest)
-        # except:
-        #     pass
+            _ = WebDriverWait(driver, self.__WAIT_FOR_ELEMENT_TIMEOUT).until(
+                EC.presence_of_element_located(
+                    (
+                        By.XPATH,
+                        "//*[@class='pv-profile-section pv-interests-section artdeco-container-card artdeco-card ember-view']",
+                    )
+                )
+            )
+            interestContainer = driver.find_element(By.XPATH,
+                "//*[@class='pv-profile-section pv-interests-section artdeco-container-card artdeco-card ember-view']"
+            )
+            for interestElement in interestContainer.find_elements(By.XPATH,
+                "//*[@class='pv-interest-entity pv-profile-section__card-item ember-view']"
+            ):
+                interest = Interest(
+                    interestElement.find_element(By.TAG_NAME, "h3").text.strip()
+                )
+                self.add_interest(interest)
+        except:
+            pass
 
         # get accomplishments/certifications
         try:
@@ -485,6 +509,9 @@ class Person(Scraper):
                             cert_dict["name"] and (cert_dict["date_issued"] or cert_dict["credential_id"])):
                         # prevents it from scraping connections as well
                         self.add_accomplishment(cert_dict)
+            else:
+                print("Error finding target link")
+        
 
         except:
             print("Error finding accomplishments")
