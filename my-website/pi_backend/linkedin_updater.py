@@ -23,11 +23,8 @@ print("Company:", person.company)
 print("Job Title:", person.job_title)
 
 print("Experience:")
-# TODO:
-# 1. fix where there are chains of companies
-# 2. get company logo images
 for exp in person.experiences:
-    print(vars(exp))
+    print(exp)
 
 # add company logo
 print("\nEducation:")

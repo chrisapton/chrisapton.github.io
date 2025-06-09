@@ -6,3 +6,4 @@ openai
 flask_apscheduler
 selenium
 lxml
+bs4
