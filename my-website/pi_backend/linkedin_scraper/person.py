@@ -4,11 +4,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
+from selenium.webdriver.common.action_chains import ActionChains
 from .objects import Experience, Education, Scraper, Interest, Accomplishment, Contact
 from bs4 import BeautifulSoup
 
 import os
 import re
+import time
 from linkedin_scraper import selectors
 
 
@@ -34,6 +36,7 @@ class Person(Scraper):
         scrape=True,
         close_on_complete=True,
         time_to_wait_after_login=0,
+        resume_url=None,
     ):
         self.linkedin_url = linkedin_url
         self.name = name
@@ -44,6 +47,7 @@ class Person(Scraper):
         self.accomplishments = accomplishments or []
         self.also_viewed_urls = []
         self.contacts = contacts or []
+        self.resume_url = resume_url or None
 
         if driver is None:
             try:
@@ -206,7 +210,7 @@ class Person(Scraper):
                 inner_ul = nested_container.find("ul")
                 if inner_ul:
                     for role_li in inner_ul.find_all("li", class_="pvs-list__paged-list-item", recursive=False):
-                        all_experiences.append(
+                        self.experiences.append(
                             get_role_details(role_li, company_name, company_url, logo_url, location_hint)
                         )
                     continue  # done with this company
@@ -418,13 +422,20 @@ class Person(Scraper):
 
                 description = position_summary_text.text if position_summary_text else ""
 
+                try:
+                    company_image_url = institution_logo_elem.find_element(By.TAG_NAME, "img").get_attribute("src")
+                except NoSuchElementException:
+                    company_image_url = None
+
+
                 education = Education(
                     from_date=from_date,
                     to_date=to_date,
                     description=description,
                     degree=degree,
                     institution_name=institution_name,
-                    linkedin_url=institution_linkedin_url
+                    linkedin_url=institution_linkedin_url,
+                    company_image_url=company_image_url,
                 )
                 self.add_education(education)
             except (NoSuchElementException, IndexError) as e:
@@ -522,6 +533,7 @@ class Person(Scraper):
             if target_link:
                 show_all_url = target_link.get_attribute("href")
                 print("Navigating to:", show_all_url)
+                original_profile_url = driver.current_url
                 driver.get(show_all_url)
                 print("Found")
 
@@ -604,30 +616,113 @@ class Person(Scraper):
                         self.add_accomplishment(cert_dict)
             else:
                 print("Error finding target link")
+                print(driver.current_url)
         
 
         except:
             print("Error finding accomplishments")
             pass
 
-        # get connections
-        # try:
-        #     driver.get("https://www.linkedin.com/mynetwork/invite-connect/connections/")
-        #     _ = WebDriverWait(driver, self.__WAIT_FOR_ELEMENT_TIMEOUT).until(
-        #         EC.presence_of_element_located((By.CLASS_NAME, "mn-connections"))
-        #     )
-        #     connections = driver.find_element(By.CLASS_NAME, "mn-connections")
-        #     if connections is not None:
-        #         for conn in connections.find_elements(By.CLASS_NAME, "mn-connection-card"):
-        #             anchor = conn.find_element(By.CLASS_NAME, "mn-connection-card__link")
-        #             url = anchor.get_attribute("href")
-        #             name = conn.find_element(By.CLASS_NAME, "mn-connection-card__details").find_element(By.CLASS_NAME, "mn-connection-card__name").text.strip()
-        #             occupation = conn.find_element(By.CLASS_NAME, "mn-connection-card__details").find_element(By.CLASS_NAME, "mn-connection-card__occupation").text.strip()
+        # Downloading resume
+        try:
+            # Navigate back to the original profile URL
+            driver.get(original_profile_url)
 
-        #             contact = Contact(name=name, occupation=occupation, url=url)
-        #             self.add_contact(contact)
-        # except:
-        #     connections = None
+            # Wait for Featured section to load
+            WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "artdeco-carousel__content"))
+            )
+
+            # Step 1: Find all cards in the Featured section
+            featured_cards = driver.find_elements(
+                By.XPATH,
+                "//div[contains(@class, 'pv-profile-component-builder__card')]"
+            )
+
+            resume_link = None
+
+            for card in featured_cards:
+                try:
+                    # Step 2: Check if this card contains "Resume.pdf"
+                    title_elem = card.find_element(By.XPATH, ".//span[contains(text(), 'Resume.pdf')]")
+                    if title_elem:
+                        print("Found Resume.pdf")
+
+                        # Step 3: Find the <a> element wrapping the preview
+                        anchor = card.find_element(By.XPATH, ".//a[contains(@class, 'optional-action-target-wrapper')]")
+                        resume_link = anchor.get_attribute("href")
+                        break
+                except:
+                    continue
+
+            if resume_link:
+                print("Navigating to resume preview page:", resume_link)
+                driver.get(resume_link)
+
+                # Step 4: Wait for fullscreen button and click it using JS
+                # TODO: fix so it presses on fullscreen button and then nagivates to click the resume download button
+
+                try:
+                    # Wait for the player wrapper to appear — this is what we need to hover
+
+                    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+                    target_frame = None
+                    for iframe in iframes:
+                        src = iframe.get_attribute("src")
+                        if src and "native-document.html" in src:
+                            target_frame = iframe
+                            break
+
+                    if target_frame:
+                        driver.switch_to.frame(target_frame)
+                    else:
+                        raise Exception("Could not find target iframe!")
+
+                    # 1. Wait for the toolbar to appear
+                    viewer_area = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.CLASS_NAME, "ssplayer-actions"))
+                    )
+
+                    # Hover to trigger controls (like fullscreen button)
+                    ActionChains(driver).move_to_element(viewer_area).perform()
+                    print("Hovered over viewer to reveal controls.")
+
+                    # Wait and click fullscreen button after it becomes visible
+                    fullscreen_btn = WebDriverWait(driver, 30).until(
+                        EC.element_to_be_clickable((By.CLASS_NAME, "ssplayer-fullscreen-on-button"))
+                    )
+
+                    # Scroll and click using JS (still useful just in case)
+                    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", fullscreen_btn)
+                    time.sleep(2)
+                    ActionChains(driver)\
+                        .move_to_element(fullscreen_btn)\
+                        .pause(0.5)\
+                        .click(fullscreen_btn)\
+                        .perform()
+                    print("Clicked fullscreen button.")
+                except Exception as e:
+                    print("Failed to activate fullscreen mode:", e)
+
+                # Step 5: Wait for download link to appear and extract it
+                try:
+                    time.sleep(1)
+                    driver.maximize_window()
+                    time.sleep(2)
+
+                    download_link_elem = driver.find_element(By.CSS_SELECTOR, ".ssplayer-virus-scan-container__download-button")
+                    download_url = download_link_elem.get_attribute("href")
+
+                    # Store the resume URL
+                    self.resume_url = download_url
+                except Exception as e:
+                    print("Download link not found:", e)
+            else:
+                print("Resume.pdf not found in Featured section.")
+                print(driver.current_url)
+
+        except Exception as e:
+            print("Error extracting resume download link:", e)
 
         if close_on_complete:
             driver.quit()

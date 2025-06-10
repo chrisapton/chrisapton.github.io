@@ -28,6 +28,12 @@ def login(driver, email=None, password=None, cookie = None, timeout=10):
   
     password_elem = driver.find_element(By.ID,"password")
     password_elem.send_keys(password)
+
+    remember_checkbox = driver.find_element(By.ID, "rememberMeOptIn-checkbox")
+    # Uncheck with JS if checked
+    if remember_checkbox.is_selected():
+        driver.execute_script("arguments[0].checked = false;", remember_checkbox)
+
     password_elem.submit()
   
     if driver.current_url == 'https://www.linkedin.com/checkpoint/lg/login-submit':

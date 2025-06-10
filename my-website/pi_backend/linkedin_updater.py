@@ -10,6 +10,7 @@ driver = webdriver.Chrome()
 email = os.getenv("LINKEDIN_EMAIL")
 password = os.getenv("LINKEDIN_PASSWORD")
 
+# updates the driver
 actions.login(driver, email, password) # if email and password isnt given, it'll prompt in terminal
 person = Person("https://www.linkedin.com/in/chrisapton/", scrape=True, close_on_complete=True, driver=driver)
 
@@ -26,7 +27,6 @@ print("Experience:")
 for exp in person.experiences:
     print(exp)
 
-# add company logo
 print("\nEducation:")
 for edu in person.educations:
     print(vars(edu))
@@ -36,5 +36,6 @@ for acc in person.accomplishments:
     print(acc)
 
 # Download resume
+print("Resume:", person.resume_url)
 
 # save all the data

@@ -46,6 +46,7 @@ class Education(Institution):
     to_date: str = None
     description: str = None
     degree: str = None
+    company_image_url: str = None
 
 
 @dataclass
