@@ -14,6 +14,11 @@ function dedupeDescription(description) {
     .join('\n');
 }
 
+const getCity = (location) => {
+  if (!location) return "";
+  return location.split(",")[0].trim();
+};
+
 const About = () => {
   // State for LinkedIn info
   const [linkedinInfo, setLinkedinInfo] = useState(null);
@@ -176,7 +181,7 @@ const About = () => {
       <p>When I’m not working with data, I enjoy:</p>
       <ul>
         <li>Rock climbing at local gyms and outdoor climbing spots</li>
-        <li>Exploring new cafes and restaurants in Los Angeles</li>
+        <li>Exploring new cafes and restaurants in {getCity(edu.location)}</li>
         <li>Participating in hackathons to build innovative solutions</li>
       </ul>
     </section>
