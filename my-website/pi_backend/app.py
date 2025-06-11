@@ -5,6 +5,7 @@ from flask import Flask, jsonify, request
 from flask_apscheduler import APScheduler
 from flask_cors import CORS
 from github_repo_updater import update_repos_cache, load_cache
+from linkedin_updater import update_linkedin, load_linkedin_cache
 import os
 import time
 
@@ -30,6 +31,7 @@ def weekly_repos_update():
     if time.time() - get_last_run() > 7 * 24 * 60 * 60:
         print("Running scheduled weekly repos update...")
         update_repos_cache()
+        update_linkedin()
         set_last_run()
     else:
         print("Weekly repo update: Not needed yet.")
@@ -73,6 +75,31 @@ def repos_forced():
         reverse=True
     )
     return jsonify(sorted_list)
+
+@app.route('/linkedin/about')
+def linkedin_cached_about():
+    data = load_linkedin_cache("about")
+    return jsonify(data)
+
+@app.route('/linkedin/experience')
+def linkedin_cached_experience():
+    data = load_linkedin_cache("experience")
+    return jsonify(data)
+
+@app.route('/linkedin/education')
+def linkedin_cached_education():
+    data = load_linkedin_cache("education")
+    return jsonify(data)
+
+@app.route('/linkedin/certifications')
+def linkedin_cached_certifications():
+    data = load_linkedin_cache("certifications")
+    return jsonify(data)
+
+@app.route('/linkedin/forced')
+def linkedin_forced():
+    update_linkedin()
+    return "Linkedin updated"
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5050))

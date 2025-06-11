@@ -269,5 +269,21 @@
       "Statistical Modeling"
     ],
     "updatedDate": "2025-05-31"
+  },
+  {
+    "title": "chrisapton.github.io",
+    "description": "This repository contains the source code and assets for my personal website, built using GitHub Pages.",
+    "github": "https://github.com/chrisapton/chrisapton.github.io",
+    "demoType": null,
+    "demoContent": null,
+    "startDate": "2020-08-31",
+    "endDate": "2025-06-10",
+    "ongoing": false,
+    "skills": [
+      "React",
+      "GitHub Pages",
+      "Shell Scripting"
+    ],
+    "updatedDate": "2025-06-10"
   }
 ]

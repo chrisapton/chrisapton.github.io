@@ -1,0 +1,62 @@
+[
+    {
+        "institution_name": "Georgia Institute of Technology",
+        "linkedin_url": "https://www.linkedin.com/company/3558/",
+        "website": null,
+        "industry": null,
+        "type": null,
+        "headquarters": null,
+        "company_size": null,
+        "founded": null,
+        "from_date": null,
+        "to_date": null,
+        "description": "",
+        "degree": "Master of Science - MS, Computer Science",
+        "company_image_url": "https://media.licdn.com/dms/image/v2/C4E0BAQFuhLQoh5_7yA/company-logo_100_100/company-logo_100_100/0/1640110532212/georgia_institute_of_technology_logo?e=1755129600&v=beta&t=ebC3BiSkDkWTO87ewKwA5fwaGcvL8fI1zwpkyujl5I0"
+    },
+    {
+        "institution_name": "University of Southern California",
+        "linkedin_url": "https://www.linkedin.com/company/3084/",
+        "website": null,
+        "industry": null,
+        "type": null,
+        "headquarters": null,
+        "company_size": null,
+        "founded": null,
+        "from_date": "2023",
+        "to_date": "2025",
+        "description": "Grade: 3.7\nGrade: 3.7\nSkills: Data Analysis \u00b7 Data Science \u00b7 Database Management System (DBMS) \u00b7 Data Modeling\nData Analysis \u00b7 Data Science \u00b7 Database Management System (DBMS) \u00b7 Data Modeling",
+        "degree": "Master's degree, Applied Data Science",
+        "company_image_url": "https://media.licdn.com/dms/image/v2/C4E0BAQHatTfEv4Af6w/company-logo_100_100/company-logo_100_100/0/1631312619853?e=1755129600&v=beta&t=4rRb-T9hOaneuMSYbtXgg0QgAE5fWt9Uuwb-jv6ZpOI"
+    },
+    {
+        "institution_name": "UCLA",
+        "linkedin_url": "https://www.linkedin.com/company/2477/",
+        "website": null,
+        "industry": null,
+        "type": null,
+        "headquarters": null,
+        "company_size": null,
+        "founded": null,
+        "from_date": "2021",
+        "to_date": "2023",
+        "description": "Grade: 3.7\nGrade: 3.7\nActivities and societies: Research team at Datares, Research in Time Series and LSTMs\nActivities and societies: Research team at Datares, Research in Time Series and LSTMs",
+        "degree": "Bachelor's degree, Data Theory, Bioinformatics minor",
+        "company_image_url": "https://media.licdn.com/dms/image/v2/D560BAQEDHp-TpD9AYQ/company-logo_100_100/company-logo_100_100/0/1688403831517/ucla_logo?e=1755129600&v=beta&t=AugkS3Rc7LZaHUDVHlPfk9h9eJMYoSD1CjPsghZ_gRc"
+    },
+    {
+        "institution_name": "De Anza College",
+        "linkedin_url": "https://www.linkedin.com/company/15249690/",
+        "website": null,
+        "industry": null,
+        "type": null,
+        "headquarters": null,
+        "company_size": null,
+        "founded": null,
+        "from_date": "2019",
+        "to_date": "2021",
+        "description": "Grade: 4.0\nGrade: 4.0\nActivities and societies: Summa Cum Laude, Honors VP of Fundraising, Developer's Guild Treasurer, Developer's Guild ML/AI team\nActivities and societies: Summa Cum Laude, Honors VP of Fundraising, Developer's Guild Treasurer, Developer's Guild ML/AI team",
+        "degree": "Associate's degree, Liberal Arts - Business & CIS Emphasis",
+        "company_image_url": "https://media.licdn.com/dms/image/v2/C510BAQFOIoUaCdyM7Q/company-logo_100_100/company-logo_100_100/0/1631379563643?e=1755129600&v=beta&t=TX8KZ4wFHFdL6dHgUrmaDhrIHKvx7MZZX-UXO3PgHnI"
+    }
+]

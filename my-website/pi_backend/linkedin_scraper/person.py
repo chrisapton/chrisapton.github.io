@@ -219,9 +219,6 @@ class Person(Scraper):
 
             self.experiences.append(get_role_details(exp_li, company_name, company_url, logo_url))
 
-        #with open("linkedin_experience.html", "w", encoding="utf-8") as f:
-        #    f.write(self.driver.page_source)
-
         # HTML at self.driver.page_source
 
         # for position in main_list.find_elements(By.CLASS_NAME, "pvs-list__paged-list-item"):
