@@ -181,7 +181,7 @@ const About = () => {
       <p>When I’m not working with data, I enjoy:</p>
       <ul>
         <li>Rock climbing at local gyms and outdoor climbing spots</li>
-        <li>Exploring new cafes and restaurants in {getCity(edu.location)}</li>
+        <li>Exploring new cafes and restaurants in {linkedinInfo ? getCity(linkedinInfo.location) : "my city"}</li>
         <li>Participating in hackathons to build innovative solutions</li>
       </ul>
     </section>
