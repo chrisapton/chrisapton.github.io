@@ -10,8 +10,10 @@ from selenium import webdriver
 email = os.getenv("LINKEDIN_EMAIL")
 password = os.getenv("LINKEDIN_PASSWORD")
 
-# updates the driver
+#TODO: 
+# Fix education duplication issue
 
+# updates the driver
 def update_linkedin():
     driver = webdriver.Chrome()
     actions.login(driver, email, password)

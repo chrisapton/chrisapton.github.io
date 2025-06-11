@@ -1,6 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+
+function dedupeDescription(description) {
+  if (!description) return "";
+  // Split into lines, remove duplicate lines (preserving order)
+  const seen = new Set();
+  return description
+    .split('\n')
+    .filter(line => {
+      if (seen.has(line.trim())) return false;
+      seen.add(line.trim());
+      return true;
+    })
+    .join('\n');
+}
 
 const About = () => {
+  // State for LinkedIn info
+  const [linkedinInfo, setLinkedinInfo] = useState(null);
+
+  useEffect(() => {
+    fetch("https://chrisbackend.roundrobinstore.com/linkedin/about")
+      .then((res) => res.json())
+      .then((data) => setLinkedinInfo(data))
+      .catch((err) => {
+        console.error("Failed to fetch LinkedIn info:", err);
+      });
+  }, []);
+
+  const [education, setEducation] = useState([]);
+
+  useEffect(() => {
+    fetch("https://chrisbackend.roundrobinstore.com/linkedin/education")
+      .then((res) => res.json())
+      .then((data) => setEducation(data))
+      .catch((err) => {
+        console.error("Failed to fetch education data:", err);
+      });
+  }, []);
+
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif'}}>
       <h1>About Me</h1>
@@ -38,6 +75,89 @@ const About = () => {
         </div>
       </div>
 
+        <div style={{
+          marginTop: '40px',
+          padding: '24px',
+          background: '#f5f6fa',
+          borderRadius: '12px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+          width: '83%',
+          maxWidth: '1300px'
+        }}>
+          <h2 style={{ color: '#0072b1', marginBottom: '16px' }}>
+            LinkedIn Information
+          </h2>
+          {linkedinInfo ? (
+            <div style={{ lineHeight: '1.7', color: '#333' }}>
+              <div><strong>Location:</strong> {linkedinInfo.location}</div>
+              <div style={{ margin: '10px 0' }}>
+                <strong>About:</strong>
+                <div style={{ whiteSpace: 'pre-line', marginLeft: '12px' }}>
+                  {linkedinInfo.about}
+                </div>
+              </div>
+              <div><strong>Last Company:</strong> {linkedinInfo.company}</div>
+              <div><strong>Job Title:</strong> {linkedinInfo.jobTitle}</div>
+              <div>
+                <strong>Resume:</strong>{" "}
+                <a
+                  href={linkedinInfo.resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View PDF
+                </a>
+              </div>
+              <section style={{ marginTop: '32px', marginBottom: '30px' }}>
+                <h2 style={{ fontSize: '1.5em', color: '#444' }}>Education</h2>
+                <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                  {education.length === 0 ? (
+                    <li>Loading education...</li>
+                  ) : (
+                    education.map((edu, idx) => (
+                      <li key={idx} style={{ marginBottom: '15px', display: "flex", alignItems: "center" }}>
+                        {edu.company_image_url && (
+                          <img
+                            src={edu.company_image_url}
+                            alt={edu.institution_name + " logo"}
+                            style={{ width: 40, height: 40, objectFit: "cover", borderRadius: "8px", marginRight: 16 }}
+                          />
+                        )}
+                        <div>
+                          <strong>
+                            <a href={edu.linkedin_url} target="_blank" rel="noopener noreferrer" style={{ color: "#004080" }}>
+                              {edu.institution_name}
+                            </a>
+                          </strong>
+                          {edu.from_date || edu.to_date ? (
+                            <span style={{ marginLeft: 8, color: "#666", fontSize: "0.95em" }}>
+                              ({edu.from_date || "?"} – {edu.to_date || "?"})
+                            </span>
+                          ) : null}
+                          <br />
+                          {edu.degree}
+                          {edu.description && (
+                            <>
+                              <br />
+                              <span style={{ whiteSpace: "pre-line", fontSize: "0.95em", color: "#444" }}>
+                                {dedupeDescription(edu.description)}
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </section>
+
+            </div>
+          ) : (
+            <div>Loading LinkedIn information...</div>
+          )}
+        </div>
+
+
 {/* Education and Hobbies with Image */}
 <div 
   style={{ 
@@ -50,24 +170,9 @@ const About = () => {
 >
   {/* Left Section - Education and Hobbies */}
   <div style={{ flex: '1', minWidth: '300px', maxWidth: '600px' }}>
-    <section style={{ marginBottom: '30px' }}>
-      <h2 style={{ fontSize: '1.5em', color: '#444' }}>Education</h2>
-      <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
-        <li style={{ marginBottom: '15px' }}>
-          <strong>University of Southern California (USC)</strong>, Los Angeles, CA
-          <br />
-          MS, Applied Data Science (Expected May 2025), GPA: 3.8
-        </li>
-        <li>
-          <strong>University of California, Los Angeles (UCLA)</strong>, Los Angeles, CA
-          <br />
-          BS, Data Theory (Mathematics, Statistics, & Data Science) with a minor in Bioinformatics, GPA: 3.7
-        </li>
-      </ul>
-    </section>
 
     <section>
-      <h2 style={{ fontSize: '1.5em', color: '#444' }}>Hobbies</h2>
+      <h2 style={{ marginTop: '32px', fontSize: '1.5em', color: '#444' }}>Hobbies</h2>
       <p>When I’m not working with data, I enjoy:</p>
       <ul>
         <li>Rock climbing at local gyms and outdoor climbing spots</li>
@@ -75,6 +180,18 @@ const About = () => {
         <li>Participating in hackathons to build innovative solutions</li>
       </ul>
     </section>
+
+    <section style={{ marginBottom: '30px' }}>
+        <h2 style={{ fontSize: '1.5em', color: '#444' }}>Contact</h2>
+        <p>
+          Feel free to connect with me via:
+        </p>
+        <ul>
+          <li><strong>Email:</strong> <a href="mailto:chrisapton@gmail.com">chrisapton@gmail.com</a></li>
+          <li><strong>GitHub:</strong> <a href="https://github.com/chrisapton" target="_blank" rel="noopener noreferrer">chrisapton</a></li>
+          <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/chrisapton" target="_blank" rel="noopener noreferrer">chrisapton</a></li>
+        </ul>   
+      </section>
   </div>
 
   {/* Right Section - Climbing Image */}
@@ -84,7 +201,8 @@ const About = () => {
       width: '100%', 
       maxWidth: '300px', 
       textAlign: 'center',
-      margin: '0 auto' 
+      margin: '0 auto',
+      marginTop: '32px'
     }}
   >
     <img 
@@ -100,25 +218,6 @@ const About = () => {
     />
   </div>
 </div>
-
-
-      <section style={{ marginBottom: '30px' }}>
-        <h2 style={{ fontSize: '1.5em', color: '#444' }}>Contact</h2>
-        <p>
-          Feel free to connect with me via:
-        </p>
-        <ul>
-          <li><strong>Email:</strong> <a href="mailto:chrisapton@gmail.com">chrisapton@gmail.com</a></li>
-          <li><strong>GitHub:</strong> <a href="https://github.com/chrisapton" target="_blank" rel="noopener noreferrer">chrisapton</a></li>
-          <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/chrisapton" target="_blank" rel="noopener noreferrer">chrisapton</a></li>
-        </ul>
-
-        <p>
-          You can also download my resume <a href="/Resume.pdf" target="_blank" rel="noopener noreferrer" 
-          style={{ color: '#007bff', textDecoration: 'none', fontWeight: 'bold' }}> here</a>.
-        </p>
-    
-      </section>
     </div>
   );
 };

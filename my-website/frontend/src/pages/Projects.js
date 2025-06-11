@@ -14,7 +14,7 @@ const Projects = () => {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>Projects</h1>
+      <h1>GitHub Information</h1>
       <p>Here are some of my projects:</p>
       <div>
         {projects.map((project, index) => (
