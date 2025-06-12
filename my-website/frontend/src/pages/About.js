@@ -2,16 +2,62 @@ import React, { useEffect, useState } from "react";
 
 function dedupeDescription(description) {
   if (!description) return "";
-  // Split into lines, remove duplicate lines (preserving order)
-  const seen = new Set();
-  return description
-    .split('\n')
-    .filter(line => {
-      if (seen.has(line.trim())) return false;
-      seen.add(line.trim());
-      return true;
-    })
-    .join('\n');
+  const lines = description.split('\n');
+  const seenLines = new Set();
+  const seenPhraseSets = new Set(); // To dedupe lines with the same phrases even if no prefix
+  const resultLines = [];
+
+  // Helper to normalize phrase sets for comparison
+  function phrasesKey(str) {
+    return str
+      .split(/,|\u00b7/)
+      .map(s => s.trim())
+      .filter(Boolean)
+      .join('|'); // Order matters, if you want order-independent, use sort()
+  }
+
+  for (let line of lines) {
+    const trimmedLine = line.trim();
+    if (!trimmedLine) continue;
+
+    // If line is already seen exactly, skip
+    if (seenLines.has(trimmedLine)) continue;
+
+    // Check for "prefix: ..." lines
+    const match = trimmedLine.match(/^([^:]+:)(.*)$/);
+    let phrasePart = "";
+    let prefix = "";
+    if (match) {
+      prefix = match[1].trim();
+      phrasePart = match[2].trim();
+    } else {
+      phrasePart = trimmedLine;
+    }
+
+    // If line is "Skills: ...." or just "...." with list of skills, dedupe based on phrases!
+    if (phrasePart.includes('\u00b7') || phrasePart.includes(',')) {
+      const key = phrasesKey(phrasePart);
+      if (seenPhraseSets.has(key)) continue;
+      seenPhraseSets.add(key);
+
+      // Remove duplicate phrases within this line
+      let phrases = phrasePart.split(/,|\u00b7/).map(p => p.trim()).filter(Boolean);
+      const seenPhrases = new Set();
+      phrases = phrases.filter(p => {
+        if (seenPhrases.has(p)) return false;
+        seenPhrases.add(p);
+        return true;
+      });
+      const sep = phrasePart.includes('\u00b7') ? ' · ' : ', ';
+      resultLines.push((prefix ? (prefix + " ") : "") + phrases.join(sep));
+    } else {
+      // If not a phrase list, just dedupe as a line
+      resultLines.push(trimmedLine);
+    }
+    seenLines.add(trimmedLine);
+  }
+
+  return resultLines.join('\n');
 }
 
 const getCity = (location) => {
