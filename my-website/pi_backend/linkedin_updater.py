@@ -56,7 +56,7 @@ def update_linkedin():
         driver.refresh()
         
         # The old password login is no longer needed:
-        # actions.login(driver, email, password) 
+        actions.login(driver, email, password) 
 
         person = Person("https://www.linkedin.com/in/chrisapton/", scrape=True, close_on_complete=False, driver=driver)
 
