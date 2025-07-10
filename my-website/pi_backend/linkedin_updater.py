@@ -33,7 +33,7 @@ def update_linkedin():
     # --- 2. Let Selenium find the geckodriver you installed ---
     # No need for the custom get_chrome_service() function anymore.
     # This will automatically find the geckodriver in /usr/local/bin.
-    service = FirefoxService()
+    service = FirefoxService(executable_path="/usr/local/bin/geckodriver")
 
     # --- 3. Instantiate the Firefox driver ---
     driver = Firefox(service=service, options=options)
