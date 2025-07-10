@@ -2,20 +2,35 @@
 # from dotenv import load_dotenv
 # load_dotenv()
 
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
+from linkedin_scraper import Person, actions
 import os
 import json
-from linkedin_scraper import Person, actions
-from selenium import webdriver
 
 email = os.getenv("LINKEDIN_EMAIL")
 password = os.getenv("LINKEDIN_PASSWORD")
+
+
 
 #TODO: 
 # Fix education duplication issue
 
 # updates the driver
 def update_linkedin():
-    driver = webdriver.Chrome()
+    # Set up Chrome options
+    options = Options()
+    options.binary_location = "/usr/bin/chromium-browser"  # or "/usr/bin/chromium"
+    options.add_argument("--headless")                     # (optional)
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+
+    # Set up the service
+    service = Service("/usr/bin/chromedriver")
+
+    # Create the driver
+    driver = webdriver.Chrome(service=service, options=options)
     actions.login(driver, email, password)
     person = Person("https://www.linkedin.com/in/chrisapton/", scrape=True, close_on_complete=True, driver=driver)
 
