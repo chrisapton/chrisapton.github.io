@@ -6,6 +6,9 @@ import os
 import json
 from linkedin_scraper import Person, actions
 from selenium import webdriver
+import platform
+from selenium.webdriver.chrome.service import Service
+
 
 email = os.getenv("LINKEDIN_EMAIL")
 password = os.getenv("LINKEDIN_PASSWORD")
@@ -15,7 +18,14 @@ password = os.getenv("LINKEDIN_PASSWORD")
 
 # updates the driver
 def update_linkedin():
-    driver = webdriver.Chrome()
+    def get_chrome_service():
+        # Only specify path if on ARM/Linux (Pi)
+        if platform.machine().startswith("arm") or platform.machine().startswith("aarch"):
+            return Service("/usr/bin/chromedriver")
+        else:
+            return Service()  # Let Selenium auto-detect
+    service = get_chrome_service()
+    driver = webdriver.Chrome(service=service)
     actions.login(driver, email, password)
     person = Person("https://www.linkedin.com/in/chrisapton/", scrape=True, close_on_complete=True, driver=driver)
 
