@@ -26,8 +26,6 @@ password = os.getenv("LINKEDIN_PASSWORD")
 # updates the driver
 def update_linkedin():
 
-def update_linkedin():
-
     options = FirefoxOptions()
 
     # We MUST run in headless mode for an SSH-only environment
