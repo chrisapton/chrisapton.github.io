@@ -43,7 +43,7 @@ def update_linkedin():
         
         print("WebDriver initialized successfully!")
         print("Navigating to LinkedIn to load session...")
-        driver.get("https://www.linkedin.com")
+        driver.get("https://www.linkedin.com/login")
 
         print("Loading cookies from file...")
         with open("linkedin_cookies.json", "r") as f:
