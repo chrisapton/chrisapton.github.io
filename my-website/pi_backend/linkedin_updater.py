@@ -22,6 +22,12 @@ password = os.getenv("LINKEDIN_PASSWORD")
 def update_linkedin():
 
     options = Options()
+    # Add these arguments for running on Raspberry Pi
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    
+    # Your original argument for a unique user data directory is good practice
     options.add_argument(f'--user-data-dir={tempfile.mkdtemp()}')
     def get_chrome_service():
         # Only specify path if on ARM/Linux (Pi)
