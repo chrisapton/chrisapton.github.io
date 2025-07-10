@@ -28,7 +28,7 @@ def update_linkedin():
 
     options = FirefoxOptions()
     # The headless argument is the main one you need for server use
-    options.add_argument("-headless")
+    # options.add_argument("-headless")
 
     # --- 2. Let Selenium find the geckodriver you installed ---
     # No need for the custom get_chrome_service() function anymore.
