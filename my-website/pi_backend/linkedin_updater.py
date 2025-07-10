@@ -31,9 +31,9 @@ def update_linkedin():
     # We MUST run in headless mode for an SSH-only environment
     options.add_argument("-headless")
     options.add_argument("--disable-gpu")
-
-    # Explicitly tell Selenium where the Firefox Browser is
     options.binary_location = "/usr/bin/firefox-esr"
+    user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:127.0) Gecko/20100101 Firefox/127.0"
+    options.set_preference("general.useragent.override", user_agent)
     
     driver = None
     try:
@@ -42,12 +42,22 @@ def update_linkedin():
         driver = Firefox(service=service, options=options)
         
         print("WebDriver initialized successfully!")
+        print("Navigating to LinkedIn to load session...")
+        driver.get("https://www.linkedin.com")
 
-        # ... your login and scraping logic goes here ...
-        # The error will happen somewhere in this part of the code.
+        print("Loading cookies from file...")
+        with open("linkedin_cookies.json", "r") as f:
+            cookies = json.load(f)
+        for cookie in cookies:
+            driver.add_cookie(cookie)
 
+        print("Cookies loaded. Refreshing page to restore session.")
+        # Refresh the page. The browser will now be logged in.
+        driver.refresh()
+        
+        # The old password login is no longer needed:
+        # actions.login(driver, email, password) 
 
-        actions.login(driver, email, password)
         person = Person("https://www.linkedin.com/in/chrisapton/", scrape=True, close_on_complete=False, driver=driver)
 
     except Exception as e:
