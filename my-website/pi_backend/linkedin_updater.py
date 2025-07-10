@@ -2,14 +2,19 @@
 # from dotenv import load_dotenv
 # load_dotenv()
 
-import os
 import json
+import os
+# Import the TimeoutException to catch it specifically
+from selenium.common.exceptions import TimeoutException
+
+# ---- CHANGE THE IMPORTS ----
+# Use classes for Firefox instead of Chrome
+from selenium.webdriver import Firefox
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.firefox.service import Service as FirefoxService
+
+# Your other imports remain the same
 from linkedin_scraper import Person, actions
-from selenium import webdriver
-import platform
-from selenium.webdriver.chrome.service import Service
-import tempfile
-from selenium.webdriver.chrome.options import Options
 
 
 email = os.getenv("LINKEDIN_EMAIL")
@@ -21,24 +26,25 @@ password = os.getenv("LINKEDIN_PASSWORD")
 # updates the driver
 def update_linkedin():
 
-    options = Options()
-    # Add these arguments for running on Raspberry Pi
-    # options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    
-    # Your original argument for a unique user data directory is good practice
-    options.add_argument(f'--user-data-dir={tempfile.mkdtemp()}')
-    def get_chrome_service():
-        # Only specify path if on ARM/Linux (Pi)
-        if platform.machine().startswith("arm") or platform.machine().startswith("aarch"):
-            return Service("/usr/bin/chromedriver")
-        else:
-            return Service()  # Let Selenium auto-detect
-    service = get_chrome_service()
-    driver = webdriver.Chrome(service=service, options=options)
+    options = FirefoxOptions()
+    # The headless argument is the main one you need for server use
+    options.add_argument("-headless")
+
+    # --- 2. Let Selenium find the geckodriver you installed ---
+    # No need for the custom get_chrome_service() function anymore.
+    # This will automatically find the geckodriver in /usr/local/bin.
+    service = FirefoxService()
+
+    # --- 3. Instantiate the Firefox driver ---
+    driver = Firefox(service=service, options=options)
+
+    # --- THIS PART OF YOUR CODE REMAINS EXACTLY THE SAME ---
+    # The scraper library interacts with the standard 'driver' object,
+    # so it doesn't matter which browser is underneath.
+
     actions.login(driver, email, password)
-    person = Person("https://www.linkedin.com/in/chrisapton/", scrape=True, close_on_complete=True, driver=driver)
+    person = Person("https://www.linkedin.com/in/chrisapton/", scrape=True, close_on_complete=False, driver=driver)
+
 
     # save all the data
     data = {
