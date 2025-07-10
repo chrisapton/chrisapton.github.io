@@ -8,6 +8,8 @@ from linkedin_scraper import Person, actions
 from selenium import webdriver
 import platform
 from selenium.webdriver.chrome.service import Service
+import tempfile
+from selenium.webdriver.chrome.options import Options
 
 
 email = os.getenv("LINKEDIN_EMAIL")
@@ -18,6 +20,9 @@ password = os.getenv("LINKEDIN_PASSWORD")
 
 # updates the driver
 def update_linkedin():
+
+    options = Options()
+    options.add_argument(f'--user-data-dir={tempfile.mkdtemp()}')
     def get_chrome_service():
         # Only specify path if on ARM/Linux (Pi)
         if platform.machine().startswith("arm") or platform.machine().startswith("aarch"):
@@ -25,7 +30,7 @@ def update_linkedin():
         else:
             return Service()  # Let Selenium auto-detect
     service = get_chrome_service()
-    driver = webdriver.Chrome(service=service)
+    driver = webdriver.Chrome(service=service, options=options)
     actions.login(driver, email, password)
     person = Person("https://www.linkedin.com/in/chrisapton/", scrape=True, close_on_complete=True, driver=driver)
 
