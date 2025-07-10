@@ -26,22 +26,37 @@ password = os.getenv("LINKEDIN_PASSWORD")
 # updates the driver
 def update_linkedin():
 
+def update_linkedin():
+
     options = FirefoxOptions()
-    # The headless argument is the main one you need for server use
+
+    # We MUST run in headless mode for an SSH-only environment
     options.add_argument("-headless")
+
+    # Explicitly tell Selenium where the Firefox Browser is
     options.binary_location = "/usr/bin/firefox-esr"
+    
+    driver = None
+    try:
+        print("Initializing Firefox WebDriver in HEADLESS mode...")
+        service = FirefoxService(executable_path="/usr/local/bin/geckodriver")
+        driver = Firefox(service=service, options=options)
+        
+        print("WebDriver initialized successfully!")
 
-    # --- 2. Let Selenium find the geckodriver you installed ---
-    # No need for the custom get_chrome_service() function anymore.
-    # This will automatically find the geckodriver in /usr/local/bin.
-    service = FirefoxService(executable_path="/usr/local/bin/geckodriver")
+        # ... your login and scraping logic goes here ...
+        # The error will happen somewhere in this part of the code.
 
-    # --- 3. Instantiate the Firefox driver ---
-    driver = Firefox(service=service, options=options)
-
-    # --- THIS PART OF YOUR CODE REMAINS EXACTLY THE SAME ---
-    # The scraper library interacts with the standard 'driver' object,
-    # so it doesn't matter which browser is underneath.
+    except Exception as e:
+        print(f"\n--- An error occurred ---")
+        print(f"Error Details: {e}")
+        
+        if driver:
+            # --- THE DEBUGGING STEP FOR SSH ---
+            # Save a screenshot of the page where the error happened.
+            screenshot_file = "error_screenshot.png"
+            driver.save_screenshot(screenshot_file)
+            print(f"A screenshot has been saved to your project directory: '{screenshot_file}'")
 
     actions.login(driver, email, password)
     person = Person("https://www.linkedin.com/in/chrisapton/", scrape=True, close_on_complete=False, driver=driver)
