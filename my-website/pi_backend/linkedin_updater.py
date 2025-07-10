@@ -31,6 +31,7 @@ def update_linkedin():
 
     # Create the driver
     driver = webdriver.Chrome(service=service, options=options)
+    driver.set_page_load_timeout(60)  # seconds
     actions.login(driver, email, password)
     person = Person("https://www.linkedin.com/in/chrisapton/", scrape=True, close_on_complete=True, driver=driver)
 
