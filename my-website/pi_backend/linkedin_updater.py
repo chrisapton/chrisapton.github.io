@@ -45,6 +45,10 @@ def update_linkedin():
         # ... your login and scraping logic goes here ...
         # The error will happen somewhere in this part of the code.
 
+
+        actions.login(driver, email, password)
+        person = Person("https://www.linkedin.com/in/chrisapton/", scrape=True, close_on_complete=False, driver=driver)
+
     except Exception as e:
         print(f"\n--- An error occurred ---")
         print(f"Error Details: {e}")
@@ -55,9 +59,6 @@ def update_linkedin():
             screenshot_file = "error_screenshot.png"
             driver.save_screenshot(screenshot_file)
             print(f"A screenshot has been saved to your project directory: '{screenshot_file}'")
-
-    actions.login(driver, email, password)
-    person = Person("https://www.linkedin.com/in/chrisapton/", scrape=True, close_on_complete=False, driver=driver)
 
 
     # save all the data
