@@ -30,6 +30,7 @@ def update_linkedin():
 
     # We MUST run in headless mode for an SSH-only environment
     # options.add_argument("-headless")
+    options.add_argument("--disable-gpu")
 
     # Explicitly tell Selenium where the Firefox Browser is
     options.binary_location = "/usr/bin/firefox-esr"
