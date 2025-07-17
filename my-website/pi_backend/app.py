@@ -67,7 +67,6 @@ def repos_cached():
 @app.route('/repos/forced')
 def repos_forced():
     update_repos_cache()
-    # debugging 
     contributed_repos, _ = load_cache()
     sorted_list = sorted(
         contributed_repos.values(),
@@ -75,6 +74,11 @@ def repos_forced():
         reverse=True
     )
     return jsonify(sorted_list)
+
+@app.route('/linkedin/forced')
+def linkedin_forced():
+    update_linkedin()
+    return "Linkedin updated"
 
 @app.route('/linkedin/about')
 def linkedin_cached_about():
@@ -95,11 +99,6 @@ def linkedin_cached_education():
 def linkedin_cached_certifications():
     data = load_linkedin_cache("certifications")
     return jsonify(data)
-
-@app.route('/linkedin/forced')
-def linkedin_forced():
-    update_linkedin()
-    return "Linkedin updated"
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5050))
