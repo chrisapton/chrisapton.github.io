@@ -30,3 +30,17 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore log files
+*.log
+
+# Ignore LinkedIn cookies and screenshots
+linkedin_cookies.json
+error_screenshot.png
+
+my-website/pi_backend/contributed_repos.json
