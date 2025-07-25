@@ -166,14 +166,14 @@
     "demoType": null,
     "demoContent": null,
     "startDate": "2020-08-31",
-    "endDate": "2025-05-31",
+    "endDate": "2025-06-10",
     "ongoing": false,
     "skills": [
       "React",
       "GitHub Pages",
       "Shell Scripting"
     ],
-    "updatedDate": "2025-05-31"
+    "updatedDate": "2025-06-10"
   },
   {
     "title": "Coding_Assessment_2024",
@@ -277,13 +277,13 @@
     "demoType": null,
     "demoContent": null,
     "startDate": "2020-08-31",
-    "endDate": "2025-06-10",
+    "endDate": "2025-07-17",
     "ongoing": false,
     "skills": [
       "React",
       "GitHub Pages",
       "Shell Scripting"
     ],
-    "updatedDate": "2025-06-10"
+    "updatedDate": "2025-07-17"
   }
 ]
